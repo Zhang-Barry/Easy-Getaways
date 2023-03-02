@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import {Text, View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const SignUp = () => {
+const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
@@ -10,32 +10,26 @@ const SignUp = () => {
   const handleLogin = () => {
     // handle login logic here
     // if successful, navigate to home screen
-    navigation.navigate('Success');
+    // navigation.navigate('MainScreen');
+    navigation.navigate('MainScreen');
   };
 
   return (
     <View style={styles.container}>
       <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
       />
       <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
       />
-      <TextInput
-          style={styles.input}
-          placeholder="Re-Enter Password"
-          value={password}
-          onChangeText={setPassword}          //Change this to verify same password
-          secureTextEntry
-      />
-      <Button title="Sign Up" onPress={handleLogin} />
+      <Button title="Log in" onPress={handleLogin} />
     </View>
   );
 };
@@ -56,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default LoginScreen;

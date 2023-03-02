@@ -4,22 +4,12 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 export default function MainScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>Easy Getaways</Text>
+      <Text>Logged In</Text>
       <Button title="Log Out" onPress={() => navigation.popToTop()} />
       <StatusBar style="auto" />
     </View>
   );
 }
-
-// export default function MainScreen({ navigation }) {
-//     return (
-//       <View style={styles.container}>
-//         <Text>Easy Getaways</Text>
-//         <Button title="Log Out" onPress={() => navigation.popToTop()} />
-//         <StatusBar style="auto" />
-//       </View>
-//     );
-//   }
 
 const styles = StyleSheet.create({
   container: {
