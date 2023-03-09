@@ -1,9 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from "./src/Home";
-import MainScreen from "./src/MainScreen"
-import SignUp from "./src/SignUp"
-import LoginScreen from "./src/LoginScreen"
-import Main from './src/Tabs/Main';
+import Home from './src/Home';
+import MainScreen from './src/MainScreen';
+import SignUp from './src/SignUp';
+import LoginScreen from './src/LoginScreen';
+// import Main from './src/Tabs/Main';
 import Itineraries from './src/Tabs/Itineraries';
 import Settings from './src/Tabs/Settings';
 

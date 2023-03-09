@@ -1,17 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
+import RectangularList from './src/RectangularList';
+import Settings from './src/Tabs/Settings';
+import TabNav from './src/Tabs/TabNav';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Navigator from './Navigator'
-import React from 'react';
-import MainScreen from './src/MainScreen'
-const Stack = createNativeStackNavigator();
+import Navigator from './Navigator';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Navigator/>
-      {/* <MainScreen/> */}
-    </NavigationContainer>
+    // <TabNav/>
+    // <RectangularList/>
+    <TabNav/>   // Uncomment this for when logged in
+    
+    // <NavigationContainer>      //
+    //   <Navigator/>             //  Uncomment for login
+    // </NavigationContainer>     //
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
