@@ -48,7 +48,7 @@ function MainContainer() {
 
         <Tab.Screen name={homeName} component={Home} />
         <Tab.Screen name={itinerariesName} component={Itineraries} />
-        <Tab.Screen name={settingsName} component={Settings} />
+        <Tab.Screen name={settingsName} component={Settings} options={{headerShown: false}}/>
 
       </Tab.Navigator>
     </NavigationContainer>
