@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { login } from './actions/auth';
+// import { useDispatch } from 'react-redux';
+
 const LoginScreen = () => {
+  // const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
@@ -11,14 +15,17 @@ const LoginScreen = () => {
     // handle login logic here
     // if successful, navigate to home screen
     // navigation.navigate('MainScreen');
-    navigation.navigate('MainScreen');
+    // navigation.navigate('MainScreen');
+
+    // dispatch(login(email, password)());
+    login(email, password)();
   };
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Username"
         value={email}
         onChangeText={setEmail}
       />

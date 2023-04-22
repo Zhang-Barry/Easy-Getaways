@@ -6,15 +6,26 @@ import TabNav from './src/Tabs/TabNav';
 import { NavigationContainer } from '@react-navigation/native';
 import Navigator from './Navigator';
 
+// redux
+import { Provider } from 'react-redux'
+import store from './store';
+
 export default function App() {
   return (
-    // <TabNav/>
-    // <RectangularList/>
-    <TabNav/>   // Uncomment this for when logged in
+    // redux store wrapper.
+    <Provider store={store}>
+      <TabNav/>
+    </Provider>
+
+
+
+    // // <TabNav/>
+    // // <RectangularList/>
+    // <TabNav/>   // Uncomment this for when logged in
     
-    // <NavigationContainer>      //
-    //   <Navigator/>             //  Uncomment for login
-    // </NavigationContainer>     //
+    // // <NavigationContainer>      //
+    // //   <Navigator/>             //  Uncomment for login
+    // // </NavigationContainer>     //
   );
 }
 

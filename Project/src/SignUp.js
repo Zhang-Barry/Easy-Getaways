@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import {Text, View, TextInput, Button, StyleSheet } from 'react-native';
+import {Text, View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
@@ -17,25 +19,31 @@ const SignUp = () => {
     <View style={styles.container}>
       <TextInput
           style={styles.input}
+          placeholder="Username *"
+          value={username}
+          onChangeText={setUsername}
+      />
+      <TextInput
+          style={styles.input}
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
       />
       <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="Password *"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
       />
       <TextInput
           style={styles.input}
-          placeholder="Re-Enter Password"
+          placeholder="Re-Enter Password *"
           value={password}
           onChangeText={setPassword}          //Change this to verify same password
           secureTextEntry
       />
-      <Button title="Sign Up" onPress={handleLogin} />
+      <Button title="Register" onPress={() => Alert.alert("register")} />
     </View>
   );
 };

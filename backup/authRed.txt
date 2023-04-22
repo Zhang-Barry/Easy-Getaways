@@ -1,0 +1,54 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const initialState = {
+    access: AsyncStorage.getItem('access'),
+    refresh: AsyncStorage.getItem('refresh'),
+    isAuthenticated: null,
+    user: null,
+};
+
+export default function(state = initialState, action) {
+    const { type, payload } = action;
+    switch(type) {
+        case "LOGIN_SUCCESS":
+            AsyncStorage.setItem('access', payload.access);
+            AsyncStorage.setItem('refresh', payload.refresh);
+            return {
+                ...state,
+                isAuthenticated: true,
+                access: payload.access,
+                refresh: payload.refresh,
+            }
+        case "SIGNUP_SUCCESS":
+            return {
+                ...state,
+                isAuthenticated: false,
+                signUpSuccess: true,
+            }
+        case "LOGIN_FAIL":
+            return {
+                ...state,
+                isAuthenticated: false,
+                signUpSuccess: false,
+            }
+        case "SIGNUP_FAIL":
+            return {
+                ...state,
+                isAuthenticated: false,
+                signUpSuccess: false,
+                signUpFailMessage: payload,
+            }
+        case "LOGOUT":
+            AsyncStorage.removeItem('access');
+            AsyncStorage.removeItem('refresh');
+            return {
+                ...state,
+                access: null,
+                refresh: null,
+                isAuthenticated: false,
+                user: null
+            }
+        default:
+            return state
+    }
+};

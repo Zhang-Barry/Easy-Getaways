@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,11 +9,14 @@ import {
     TouchableOpacity,
     ScrollView,
   } from 'react-native';
-
 import { createStackNavigator } from '@react-navigation/stack';
-
 import LoginScreen from '../LoginScreen';
 import SignUp from '../SignUp';
+import { increment } from '../actions/testAction'
+
+// import authReducer from '../reducers/authReducer';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
 
 const Stack = createStackNavigator();
 
@@ -22,18 +25,23 @@ const mapTitleToScreenName = {
     "Sign Up": "SignUp",
 }
 
-
-const DATA = [
-    {
-      title: 'ACCOUNT',
-      data: ['Login', 'Sign Up'],
-    },
-    {
-      title: 'GENERAL',
-    //   data: ['Notification', 'Privacy', 'Help', 'About'],
-      data: [''],
-    },
-  ];
+const getListData = (authState) => {
+  if (!authState["isAuthenticated"]) {
+    return [
+      {
+        title: 'ACCOUNT',
+        data: ['Login', 'Sign Up'],
+      }
+    ]
+  } else {
+    return [
+      {
+        title: 'ACCOUNT',
+        data: [`You're currently logged in!\nUserID: ${authState["user"]}`, 'Logout'],
+      }
+    ]
+  }
+}
 
   const styles = StyleSheet.create({
     container: {
@@ -63,11 +71,12 @@ function handleSwitchScreen(screenName) {
     NAV.navigate(screenName);
 }
 function SettingsMenu() {
-    return (
+  const authState = useSelector(state => state.auth);
+  return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <SectionList
-                    sections={DATA}
+                    sections={getListData(authState)}
                     keyExtractor={(item, index) => item + index}
                     renderItem={({item}) => (
                         <TouchableOpacity style={styles.item} onPress={() => handleSwitchScreen(mapTitleToScreenName[item])}>
@@ -85,12 +94,14 @@ function SettingsMenu() {
 }
 
 export default function Settings({ navigation }) {
-    NAV = navigation;
-    return (
-        <Stack.Navigator initialRouteName="Settings">
-            <Stack.Screen name="Settings" component={SettingsMenu} />
-            <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        </Stack.Navigator>
-    );
+  const authState = useSelector(state => state.auth);
+  console.log(authState);
+  NAV = navigation;
+  return (
+      <Stack.Navigator initialRouteName="SettingsRoot">
+          <Stack.Screen name="Settings" component={SettingsMenu}/>
+          <Stack.Screen name="Sign Up" component={SignUp} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+      </Stack.Navigator>
+  );
 }
