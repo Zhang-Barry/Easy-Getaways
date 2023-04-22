@@ -17,6 +17,15 @@ const SignUp = () => {
 
   return (
     <View style={styles.container}>
+      <View style={{marginLeft: 40, marginBottom: 20, alignSelf: 'flex-start'}}>
+        <Text style={{fontSize:50}}>
+          Signup
+        </Text>
+        <Text>
+          Create a new account.
+        </Text>
+      </View>
+
       <TextInput
           style={styles.input}
           placeholder="Username *"

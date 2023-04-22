@@ -12,10 +12,11 @@ import {
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../LoginScreen';
 import SignUp from '../SignUp';
-import { increment } from '../actions/testAction'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // import authReducer from '../reducers/authReducer';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { logout } from '../actions/auth';
 
 
 const Stack = createStackNavigator();
@@ -23,6 +24,8 @@ const Stack = createStackNavigator();
 const mapTitleToScreenName = {
     "Login": "LoginScreen",
     "Sign Up": "SignUp",
+    "Privacy": "Home",
+    "Notification": "Home",
 }
 
 const getListData = (authState) => {
@@ -31,13 +34,21 @@ const getListData = (authState) => {
       {
         title: 'ACCOUNT',
         data: ['Login', 'Sign Up'],
+      },
+      {
+        title: 'GENERAL',
+        data: ['Privacy', 'Notification'],
       }
     ]
   } else {
     return [
       {
         title: 'ACCOUNT',
-        data: [`You're currently logged in!\nUserID: ${authState["user"]}`, 'Logout'],
+        data: ['__USERINFO__', 'Logout'],
+      },
+      {
+        title: 'GENERAL',
+        data: ['Privacy', 'Notification'],
       }
     ]
   }
@@ -61,10 +72,15 @@ const getListData = (authState) => {
       color: "gray",
     },
     title: {
-      fontSize: "large",
+      fontSize: 18,
+      marginLeft: 5,
     },
   });
 
+
+const handleLogOut = (dispatch) => {
+  dispatch(logout());
+}
 
 let NAV;
 function handleSwitchScreen(screenName) {
@@ -72,36 +88,48 @@ function handleSwitchScreen(screenName) {
 }
 function SettingsMenu() {
   const authState = useSelector(state => state.auth);
+  const dispatch = useDispatch()
   return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
                 <SectionList
                     sections={getListData(authState)}
                     keyExtractor={(item, index) => item + index}
                     renderItem={({item}) => (
-                        <TouchableOpacity style={styles.item} onPress={() => handleSwitchScreen(mapTitleToScreenName[item])}>
-                        <Text style={styles.title}>{item}</Text>
-                        </TouchableOpacity>
+
+                      (item == "__USERINFO__") ? 
+                          <TouchableOpacity style={styles.item}>
+                          <Ionicons name={"person-outline"} size={50} color={"black"} />
+                          <Text style={styles.title}>{authState["user"]["username"]}</Text>
+                          </TouchableOpacity> 
+                        :
+
+                        (item == "Logout") ? 
+                          <TouchableOpacity style={styles.item} onPress={() => handleLogOut(dispatch)}>
+                          <Text style={styles.title}>{item}</Text>
+                          </TouchableOpacity> 
+                        :
+                          <TouchableOpacity style={styles.item} onPress={() => handleSwitchScreen(mapTitleToScreenName[item])}>
+                          <Text style={styles.title}>{item}</Text>
+                          </TouchableOpacity> 
+
                     )}
                     renderSectionHeader={({section: {title}}) => (
                         <Text style={styles.header}>{title}</Text>
                     )}
                 />
                 <View style={{margin: 25}}/>
-            </ScrollView>
         </SafeAreaView>
     )
 }
 
 export default function Settings({ navigation }) {
   const authState = useSelector(state => state.auth);
-  console.log(authState);
   NAV = navigation;
   return (
       <Stack.Navigator initialRouteName="SettingsRoot">
           <Stack.Screen name="Settings" component={SettingsMenu}/>
-          <Stack.Screen name="Sign Up" component={SignUp} />
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
       </Stack.Navigator>
   );
 }

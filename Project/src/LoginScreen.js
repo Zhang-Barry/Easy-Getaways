@@ -1,28 +1,44 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { login } from './actions/auth';
-// import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { ScrollView } from 'react-native-web';
 
 const LoginScreen = () => {
-  // const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  const dispatch = useDispatch();
+
+  const authState = useSelector(state => state.auth);
+  if (authState["isAuthenticated"]) {
+    navigation.goBack();
+  }
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async (dispatch) => {
     // handle login logic here
     // if successful, navigate to home screen
     // navigation.navigate('MainScreen');
     // navigation.navigate('MainScreen');
-
-    // dispatch(login(email, password)());
-    login(email, password)();
+  
+    const action = await login(email, password)();
+    if (action) dispatch(action);
   };
 
   return (
     <View style={styles.container}>
+      <View style={{marginLeft: 40, marginBottom: 20, alignSelf: 'flex-start'}}>
+        <Text style={{fontSize:50}}>
+          Login
+        </Text>
+        <Text>
+          Login with your credentials.
+        </Text>
+      </View>
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -36,7 +52,7 @@ const LoginScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Log in" onPress={handleLogin} />
+      <Button title="Log in" onPress={() => handleLogin(dispatch)} />
     </View>
   );
 };
