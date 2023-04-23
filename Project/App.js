@@ -11,7 +11,6 @@ import { Provider } from 'react-redux'
 import { store, persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react' // local storage...
 
-
 export default function App() {
   return (
     // redux store wrapper.

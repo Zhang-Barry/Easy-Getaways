@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
-import testReducer from "./testReducer";
+import itinReducer from "./itinReducer";
 
 export default combineReducers(
     {
         auth: authReducer,
-        test: testReducer,
+        itin: itinReducer,
     }
 );

@@ -1,5 +1,3 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const defaultState = {
     access: "",
     refresh: "",
@@ -7,35 +5,19 @@ const defaultState = {
     user: {pk: null, username: null},
 }
 
-// _loadSaved = async () => {
-//     try {
-//         return await AsyncStorage.getItem(
-//             "auth"
-//         );
-//       } catch (error) {
-//         return defaultState
-//     }
-// }
-
-// const initialState = loadInitial()
-
 export default function authReducer(state=defaultState, action) {
     switch(action.type) {
         case "LOGIN_SUCCESS":
-            // TODO save to local data...
-
             // set local login state...
             return {
-                    access: action.data.access,
-                    refresh: action.data.refresh,
+                    access: action.data.access_token,
+                    refresh: action.data.refresh_token,
                     user: action.data.user,
                     isAuthenticated: true,
                 }
             ;
         case "LOGOUT":
             alert("You've been successfully logged out.");
-            // TODO purge local data...
-
             // reset login state.
             return {
                 access: "",
@@ -45,8 +27,6 @@ export default function authReducer(state=defaultState, action) {
             };
 
         case "LOGOUT_EXPIRED":
-            // TODO purge local data...
-
             // reset login state.
             alert("Token expired. Please log in again.");
             return {

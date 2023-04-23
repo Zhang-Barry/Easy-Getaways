@@ -1,28 +1,30 @@
 import { Alert } from "react-native";
 import {REACT_APP_API_URL} from '@env'
+import { getMyItinsFromServer } from "./itin";
 
 async function fetchData(url, method, body) 
 {
-  let response = await fetch(
-    url, {
-        method: method,
-        body: JSON.stringify(body),
-        headers: {
-            // "Accept": "application/json",
-            "Content-Type":"application/json",
+    try {
+        let response = await fetch(
+            url, {
+                method: method,
+                body: JSON.stringify(body),
+                headers: {
+                    // "Accept": "application/json",
+                    "Content-Type":"application/json",
+                }
+            }
+          )
+        if (!response.ok) {
+            const data = await response.json()
+            return [false, data];
+        } else {
+            const data = JSON.parse(JSON.stringify(await response.json()));
+            return [true, data];
         }
+    } catch (error) {
+        return [false, {"network_error": "Network request failed."}];
     }
-  ).catch( (error) => {
-    alert(`The following error occured: ${error}`);
-});
-
-  if (!response.ok) {
-    const data = await response.json()
-    return [false, data];
-  } else {
-    const data = JSON.parse(JSON.stringify(await response.json()));
-    return [true, data];
-  }
 }
 
 export const login = (username, password) => {
@@ -40,6 +42,7 @@ export const login = (username, password) => {
             if ("password" in fetchResult[1]) {alert( `Password: ${fetchResult[1]["password"]}` ); return;}
             if ("username" in fetchResult[1]) {alert( `Username: ${fetchResult[1]["username"]}` ); return;}
             if ("non_field_errors" in fetchResult[1]) {alert(fetchResult[1]["non_field_errors"]); return;}
+            if ("network_error" in fetchResult[1]) {alert(fetchResult[1]["network_error"]); return;}
             alert(JSON.stringify(fetchResult[1]));
             return;
         }
@@ -50,7 +53,11 @@ export const login = (username, password) => {
                 data: fetchResult[1],
             }    
         )
-
+        
+        const jwt = fetchResult[1]["access_token"]
+        const uid = fetchResult[1]["user"]["pk"]
+        // load itineraries once logged in.
+        await getMyItinsFromServer(jwt, uid)(dispatch);
     }
 }
 
@@ -73,6 +80,7 @@ export const register = (username, email, password, re_password) => {
             if ("username" in fetchResult[1]) {alert( `Username: ${fetchResult[1]["username"]}` ); return;}
             if ("email" in fetchResult[1]) {alert( `Email: ${fetchResult[1]["email"]}` ); return;}
             if ("non_field_errors" in fetchResult[1]) {alert(fetchResult[1]["non_field_errors"]); return;}
+            if ("network_error" in fetchResult[1]) {alert(fetchResult[1]["network_error"]); return;}
             alert(JSON.stringify(fetchResult[1]));
             return;
         }
@@ -91,6 +99,12 @@ export const logout = () => {
         dispatch(
             {
                 type: "LOGOUT"
+            }
+        )
+
+        dispatch(
+            {
+                type:"PURGE_ALL_LOCAL_ITIN"
             }
         )
     }
