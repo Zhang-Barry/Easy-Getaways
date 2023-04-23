@@ -1,22 +1,39 @@
 import React, { useState } from 'react';
 import {Text, View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from './actions/auth';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 const SignUp = () => {
+  const dispatch = useDispatch()
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    // handle login logic here
-    // if successful, navigate to home screen
-    navigation.navigate('Success');
+  const authState = useSelector(state => state.auth);
+  if (authState["isAuthenticated"] && !loading) {
+    navigation.goBack();
+  }
+
+  const handleRegistration = async () => {
+    setLoading(true);
+    await register(username, email, password, password2)(dispatch);
+    setLoading(false);
   };
 
   return (
     <View style={styles.container}>
+
+        <Spinner
+          visible={loading}
+          textContent={''}
+          textStyle={styles.spinnerTextStyle}
+        />
+
       <View style={{marginLeft: 40, marginBottom: 20, alignSelf: 'flex-start'}}>
         <Text style={{fontSize:50}}>
           Signup
@@ -48,11 +65,11 @@ const SignUp = () => {
       <TextInput
           style={styles.input}
           placeholder="Re-Enter Password *"
-          value={password}
-          onChangeText={setPassword}          //Change this to verify same password
+          value={password2}
+          onChangeText={setPassword2}          //Change this to verify same password
           secureTextEntry
       />
-      <Button title="Register" onPress={() => Alert.alert("register")} />
+      <Button title="Register" onPress={() => handleRegistration()} />
     </View>
   );
 };

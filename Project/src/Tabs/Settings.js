@@ -7,7 +7,6 @@ import {
     SectionList,
     StatusBar,
     TouchableOpacity,
-    ScrollView,
   } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../LoginScreen';
@@ -15,7 +14,7 @@ import SignUp from '../SignUp';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // import authReducer from '../reducers/authReducer';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/auth';
 
 
@@ -78,17 +77,18 @@ const getListData = (authState) => {
   });
 
 
-const handleLogOut = (dispatch) => {
-  dispatch(logout());
-}
-
 let NAV;
 function handleSwitchScreen(screenName) {
     NAV.navigate(screenName);
 }
 function SettingsMenu() {
   const authState = useSelector(state => state.auth);
+  
   const dispatch = useDispatch()
+  const handleLogOut = () => {
+   logout()(dispatch);
+  }
+
   return (
         <SafeAreaView style={styles.container}>
                 <SectionList
@@ -99,12 +99,12 @@ function SettingsMenu() {
                       (item == "__USERINFO__") ? 
                           <TouchableOpacity style={styles.item}>
                           <Ionicons name={"person-outline"} size={50} color={"black"} />
-                          <Text style={styles.title}>{authState["user"]["username"]}</Text>
+                          <Text style={styles.title}>{ authState["user"]["username"] }</Text>
                           </TouchableOpacity> 
                         :
 
                         (item == "Logout") ? 
-                          <TouchableOpacity style={styles.item} onPress={() => handleLogOut(dispatch)}>
+                          <TouchableOpacity style={styles.item} onPress={() => handleLogOut()}>
                           <Text style={styles.title}>{item}</Text>
                           </TouchableOpacity> 
                         :
@@ -123,7 +123,6 @@ function SettingsMenu() {
 }
 
 export default function Settings({ navigation }) {
-  const authState = useSelector(state => state.auth);
   NAV = navigation;
   return (
       <Stack.Navigator initialRouteName="SettingsRoot">

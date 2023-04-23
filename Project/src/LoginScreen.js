@@ -1,36 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import Spinner from 'react-native-loading-spinner-overlay/lib';
+
 import { login } from './actions/auth';
-import { useDispatch, useSelector } from 'react-redux';
-import { ScrollView } from 'react-native-web';
+import { useSelector, useDispatch } from 'react-redux';
 
 const LoginScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const dispatch = useDispatch();
-
   const authState = useSelector(state => state.auth);
-  if (authState["isAuthenticated"]) {
-    navigation.goBack();
-  }
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (dispatch) => {
+  if (authState["isAuthenticated"] && !loading) {
+    navigation.goBack();
+  }
+
+  const handleLogin = async () => {
     // handle login logic here
     // if successful, navigate to home screen
     // navigation.navigate('MainScreen');
     // navigation.navigate('MainScreen');
-  
-    const action = await login(email, password)();
-    if (action) dispatch(action);
+      
+    setLoading(true);
+    await login(email, password)(dispatch);
+    setLoading(false);
   };
 
   return (
     <View style={styles.container}>
+        <Spinner
+          visible={loading}
+          textContent={''}
+          textStyle={styles.spinnerTextStyle}
+        />
       <View style={{marginLeft: 40, marginBottom: 20, alignSelf: 'flex-start'}}>
         <Text style={{fontSize:50}}>
           Login
@@ -52,7 +60,7 @@ const LoginScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Log in" onPress={() => handleLogin(dispatch)} />
+      <Button title="Log in" onPress={() => handleLogin()} />
     </View>
   );
 };
