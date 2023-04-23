@@ -8,16 +8,18 @@ import Navigator from './Navigator';
 
 // redux
 import { Provider } from 'react-redux'
-import store from './store';
+import { store, persistor } from './store';
+import { PersistGate } from 'redux-persist/integration/react' // local storage...
+
 
 export default function App() {
   return (
     // redux store wrapper.
     <Provider store={store}>
+    <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
       <TabNav/>
+    </PersistGate>
     </Provider>
-
-
 
     // // <TabNav/>
     // // <RectangularList/>

@@ -1,5 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const defaultState = {
     access: "",
@@ -8,19 +7,19 @@ const defaultState = {
     user: {pk: null, username: null},
 }
 
-_loadSaved = async () => {
-    try {
-        return await AsyncStorage.getItem(
-            "auth"
-        );
-      } catch (error) {
-        return defaultState
-    }
-}
+// _loadSaved = async () => {
+//     try {
+//         return await AsyncStorage.getItem(
+//             "auth"
+//         );
+//       } catch (error) {
+//         return defaultState
+//     }
+// }
 
-const initialState = loadInitial()
+// const initialState = loadInitial()
 
-export default function authReducer(state=_loadSaved(), action) {
+export default function authReducer(state=defaultState, action) {
     switch(action.type) {
         case "LOGIN_SUCCESS":
             // TODO save to local data...
