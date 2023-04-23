@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
-import RectangularList from '../RectangularList';
+import ItineraryRectangularList from '../ItineraryRectangularList';
 
 export default function Itineraries({ navigation }) {
     return (
-        <RectangularList/>
+        <ItineraryRectangularList/>
     );
 }

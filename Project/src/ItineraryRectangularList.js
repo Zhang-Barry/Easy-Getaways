@@ -12,7 +12,7 @@ const data = [
   { id: 3, title: 'Retreat', subtitle: 'Subtitle 3' },
 ];
 
-const RectangularList = () => {
+const ItineraryRectangularList = () => {
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(false);
@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RectangularList;
+export default ItineraryRectangularList;
