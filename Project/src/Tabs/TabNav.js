@@ -5,11 +5,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Screens
 import Home from './Home';
+import Places from './Places'
 import Itineraries from './Itineraries';
 import Settings from './Settings';
 
 //Screen names
 const homeName = "Home";
+const placesName = "Places";
 const itinerariesName = "Itineraries";
 const settingsName = "Settings";
 
@@ -28,6 +30,9 @@ function MainContainer() {
             if (rn === homeName) {
               iconName = focused ? 'home' : 'home-outline';
 
+            } else if (rn === placesName) {
+              iconName = focused ? 'map' : 'map-outline';
+
             } else if (rn === itinerariesName) {
               iconName = focused ? 'list' : 'list-outline';
 
@@ -43,10 +48,11 @@ function MainContainer() {
           activeTintColor: 'tomato',
           inactiveTintColor: 'grey',
           labelStyle: { paddingBottom: 10, fontSize: 10 },
-          style: { padding: 10, height: 70}
+          tabStyle: { padding: 10, height: 70}
         }}>
 
         <Tab.Screen name={homeName} component={Home} />
+        <Tab.Screen name={placesName} component={Places} />
         <Tab.Screen name={itinerariesName} component={Itineraries} />
         <Tab.Screen name={settingsName} component={Settings} options={{headerShown: false}}/>
 
