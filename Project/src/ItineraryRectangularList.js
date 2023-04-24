@@ -85,7 +85,7 @@ const ItineraryRectangularList = ( {navigation} ) => {
   return (
     <Stack.Navigator initialRouteName="SettingsRoot">
       <Stack.Screen name="ItinListScreen" component={ItinListScreen} options={{title: "Itineraries"}}/>
-      <Stack.Screen name="ViewItinScreen" component={ViewItinScreen} options={{title: "View Itinerary"}}/>
+      <Stack.Screen name="ViewItinScreen" component={ViewItinScreen} options={{title: "View Itinerary", headerShown: false}}/>
     </Stack.Navigator>
   );
 };
