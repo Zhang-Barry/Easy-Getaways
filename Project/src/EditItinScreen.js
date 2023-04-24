@@ -3,6 +3,23 @@ import { Text, View, TextInput, Button, StyleSheet, ScrollView,  } from 'react-n
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import SelectDropdown from 'react-native-select-dropdown'
+
+const countries = ["United States", "Canada"]
+const states = {
+  "United States": ["NY", "TX", "CA"],
+  "Canada": ["Ontario"],
+}
+const cities = {
+  "United States": {
+    "NY": ["New York", "Albany", "Buffalo", ],
+    "TX": ["Austion", "Dallas", "Fort Worth", "San Antonio"],
+    "CA": ["Los Angeles", "San Francisco"]
+  },
+  "Canada": {
+    "Ontario": ["Toronto"],
+  }
+}
 
 
 const EditItinScreen = ( {route, navigation} ) => {
@@ -11,6 +28,9 @@ const EditItinScreen = ( {route, navigation} ) => {
   
   const [title, setTitle] = useState(itin.title);
   const [description, setDescription] = useState(itin.description);
+  const [country, setCountry] = useState(itin.country);
+  const [state, setState] = useState(itin.state);
+  const [city, setCity] = useState(itin.city);
   // const [username, setUsername] = useState('');
   // const [password, setPassword] = useState('');
   // const [password2, setPassword2] = useState('');
@@ -51,25 +71,20 @@ const EditItinScreen = ( {route, navigation} ) => {
             onChangeText={setDescription}
         />
 
-      <Text style={styles.inputTitle}>Location</Text>
-      <TextInput
-            style={styles.input}
-            placeholder="City"
-            value={title}
-            onChangeText={setTitle}
-        />
-      <TextInput
-            style={styles.input}
-            placeholder="State"
-            value={title}
-            onChangeText={setTitle}
-        />
-      <TextInput
-            style={styles.input}
-            placeholder="Country"
-            value={title}
-            onChangeText={setTitle}
-        />
+      <Text style={styles.inputTitle}>Itinerary Country</Text>
+      <SelectDropdown
+        data={countries}
+        onSelect={(selectedItem, index) => {
+          setCountry(selectedItem)
+        }}
+      />
+      <Text style={styles.inputTitle}>Itinerary State/Province</Text>
+      <SelectDropdown
+        data={ (country in countries) ? state[country] : [] }
+        onSelect={(selectedItem, index) => {
+          setState(selectedItem)
+        }}
+      />
 
 
         <TextInput>{"\n\n"}</TextInput>
