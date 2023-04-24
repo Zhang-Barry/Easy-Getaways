@@ -126,7 +126,7 @@ export default function Settings({ navigation }) {
   NAV = navigation;
   return (
       <Stack.Navigator initialRouteName="SettingsRoot">
-          <Stack.Screen name="Settings" component={SettingsMenu}/>
+          <Stack.Screen name="SettingsMenu" component={SettingsMenu} options={{title: "Settings"}}/>
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
       </Stack.Navigator>

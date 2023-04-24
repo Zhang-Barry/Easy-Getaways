@@ -1,4 +1,4 @@
-const defaultState = {}
+const defaultState = []
 
 export default function itinReducer(state=defaultState, action) {
     switch(action.type) {

@@ -1,13 +1,14 @@
 export async function fetchData(url, method, body) 
 {
     try {
+        console.log(url, body)
         let response = await fetch(
             url, {
                 method: method,
                 body: JSON.stringify(body),
                 headers: {
-                    // "Accept": "application/json",
-                    "Content-Type":"application/json",
+                    Accept: 'application/json',
+                    'Content-Type':'application/json',
                 }
             }
           )
@@ -19,6 +20,7 @@ export async function fetchData(url, method, body)
             return [true, data];
         }
     } catch (error) {
+        console.log(error);
         return [false, {"network_error": "Network request failed."}];
     }
 }
