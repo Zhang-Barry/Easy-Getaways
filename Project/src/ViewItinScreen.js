@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import EditItinScreen from './EditItinScreen';
@@ -6,6 +6,7 @@ import { deleteItin } from './actions/itin';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMyItinsFromServer } from './actions/itin';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import TimelineComponent from './TimelineComponent';
 
 const Stack = createStackNavigator();
 
@@ -13,12 +14,17 @@ const ViewItinScreen = ( {route, navigation} ) => {
 
   const dispatch = useDispatch();
   const authState = useSelector(state => state.auth);
+  const itinState = useSelector(state => state.itin);
+
+  // get itinerary from global state first... If doesn't exist, use itin from passed in parameters.
+  let itin = itinState.filter(obj => {return obj.tid === route.params.itin.tid})[0];
+  if (!itin) itin = route.params.itin;
+
   const jwt = authState["access"]
   const uid = authState["user"]["pk"]
 
   const [loading, setLoading] = useState(false);
 
-  const itin = route.params.itin
   const tid = itin.tid
 
   const deleteItinFromServer = async () => {
@@ -58,6 +64,7 @@ const ViewItinScreen = ( {route, navigation} ) => {
 
   const ViewItinPage = () => {
     return (
+      <ScrollView>
       <View style={styles.container}>
 
         <Spinner
@@ -65,26 +72,34 @@ const ViewItinScreen = ( {route, navigation} ) => {
           textContent={''}
           textStyle={styles.spinnerTextStyle}
         />
-
-        <ScrollView>
           <Text style={styles.titleText}>{itin.title}</Text>
           {/* <Text style={styles.locationText}>{itin.city}, {itin.state}, {itin.country}</Text> */}
           {renderLocation()}
           <Text style={styles.descriptionText}>{itin.description}</Text>
           <Text style={styles.metadataText}>Created at {itin.created_at}</Text>
           <Text style={styles.titleTextSecondary}>Timeline</Text>
-          <Text>{JSON.stringify(itin.itinerary)} TO BE CREATED LATER</Text>
+          <TimelineComponent/>
     
+
+          {
+            (itin.created_by == uid) ?
+              <View>
+                <View style={{marginTop: 50}}></View>
+                <TouchableOpacity title="Edit Itinerary" style={styles.button} onPress={() => navigation.navigate("EditItinScreen", {itin: itin})}>
+                  <Text style={styles.buttonText} >Edit</Text>
+                </TouchableOpacity>
+                <TouchableOpacity title="Delete Itinerary" style={{...styles.button, backgroundColor:"crimson"}} onPress={() => handleDeleteOnClick()}>
+                <Text style={styles.buttonText} >Delete</Text>
+                </TouchableOpacity>
+              </View>
+            : ""
+          }
+
+
+
           <View style={{marginTop: 50}}></View>
-          <TouchableOpacity title="Edit Itinerary" style={styles.button} onPress={() => navigation.navigate("EditItinScreen", {itin: itin})}>
-            <Text style={styles.buttonText} >Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity title="Delete Itinerary" style={{...styles.button, backgroundColor:"crimson"}} onPress={() => handleDeleteOnClick()}>
-          <Text style={styles.buttonText} >Delete</Text>
-          </TouchableOpacity>
-          <View style={{marginTop: 50}}></View>
-        </ScrollView>
       </View>
+      </ScrollView>
     );
   }
 

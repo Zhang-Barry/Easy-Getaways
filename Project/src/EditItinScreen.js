@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import SelectDropdown from 'react-native-select-dropdown'
 import { Country, State, City }  from 'country-state-city';
-import { insertNewItin } from './actions/itin';
+import { editItin, getMyItinsFromServer } from './actions/itin';
 
 
 
@@ -23,6 +23,7 @@ const EditItinScreen = ( {route, navigation} ) => {
   const uid = authState["user"]["pk"]
 
   // itinerary attributes
+  const tid = itin.tid;
   const [title, setTitle] = useState(itin.title);
   const [description, setDescription] = useState(itin.description);
   const [country, setCountry] = useState(itin.country);
@@ -89,9 +90,10 @@ const EditItinScreen = ( {route, navigation} ) => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    await insertNewItin(jwt, uid, title, city, state, country, description, itinerary)(dispatch);
+    await editItin(tid, jwt, uid, title, city, state, country, description, itinerary)(dispatch);
+    await getMyItinsFromServer(jwt, uid)(dispatch);
     setLoading(false);
-    navigation.goBack()
+    navigation.goBack();
   }
 
   return (
