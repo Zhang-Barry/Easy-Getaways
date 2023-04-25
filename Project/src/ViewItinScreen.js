@@ -5,6 +5,7 @@ import EditItinScreen from './EditItinScreen';
 import { deleteItin } from './actions/itin';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMyItinsFromServer } from './actions/itin';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 const Stack = createStackNavigator();
 
@@ -15,14 +16,16 @@ const ViewItinScreen = ( {route, navigation} ) => {
   const jwt = authState["access"]
   const uid = authState["user"]["pk"]
 
+  const [loading, setLoading] = useState(false);
+
   const itin = route.params.itin
   const tid = itin.tid
 
   const deleteItinFromServer = async () => {
-    // setLoading(true);
+    setLoading(true);
     await deleteItin(jwt, uid, tid)(dispatch);
     await (getMyItinsFromServer)(jwt, uid)(dispatch);
-    // setLoading(false);
+    setLoading(false);
     navigation.goBack()
   }
 
@@ -56,6 +59,13 @@ const ViewItinScreen = ( {route, navigation} ) => {
   const ViewItinPage = () => {
     return (
       <View style={styles.container}>
+
+        <Spinner
+          visible={loading}
+          textContent={''}
+          textStyle={styles.spinnerTextStyle}
+        />
+
         <ScrollView>
           <Text style={styles.titleText}>{itin.title}</Text>
           {/* <Text style={styles.locationText}>{itin.city}, {itin.state}, {itin.country}</Text> */}
