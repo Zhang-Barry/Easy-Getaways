@@ -1,7 +1,7 @@
 export async function fetchData(url, method, body) 
 {
     try {
-        console.log(url, body)
+        // console.log(url, body)
         let response = await fetch(
             url, {
                 method: method,
@@ -13,9 +13,13 @@ export async function fetchData(url, method, body)
             }
           )
         if (!response.ok) {
-            const data = await response.json()
+            if (response.status == 500) {
+                return [false, {"Error": "Internal server error."}]
+            }
+            const data = JSON.parse(JSON.stringify(await response.json()));
             return [false, data];
         } else {
+            console.log("hello")
             const data = JSON.parse(JSON.stringify(await response.json()));
             return [true, data];
         }

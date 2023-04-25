@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import SelectDropdown from 'react-native-select-dropdown'
 import { Country, State, City }  from 'country-state-city';
-import { insertNewItin } from './actions/itin';
+import { insertNewItin, getMyItinsFromServer } from './actions/itin';
 
 
 
-const EditItinScreen = ( {route, navigation} ) => {
+const CreateItinScreen = ( {route, navigation} ) => {
 
   const dispatch = useDispatch();
   const stateRef = useRef({});
@@ -90,6 +90,7 @@ const EditItinScreen = ( {route, navigation} ) => {
   const handleSubmit = async () => {
     setLoading(true);
     await insertNewItin(jwt, uid, title, city, state, country, description, itinerary)(dispatch);
+    await (getMyItinsFromServer)(jwt, uid)(dispatch);
     setLoading(false);
     navigation.goBack()
   }
@@ -104,13 +105,6 @@ const EditItinScreen = ( {route, navigation} ) => {
         />
 
       <ScrollView>
-        {/* <Text>{JSON.stringify(route.params.itin)}</Text> */}
-        
-        {/* <Spinner
-          visible={loading}
-          textContent={''}
-          textStyle={styles.spinnerTextStyle}
-        /> */}
         <Text style={styles.inputTitle}>Title</Text>
         <TextInput
             style={styles.input}
@@ -201,4 +195,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default EditItinScreen;
+export default CreateItinScreen;

@@ -3537,6 +3537,11 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
+country-state-city@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.npmjs.org/country-state-city/-/country-state-city-3.1.4.tgz"
+  integrity sha512-gULjY6rojfdTbgBoPXYbcnmS0SSFzRJl+/jgS/IIxraI7l4YVbT/Jb53OFujJwrQP4d19YC7yWIDHyxtMxgHVQ==
+
 create-react-class@^15.6.2, create-react-class@^15.7.0:
   version "15.7.0"
   resolved "https://registry.npmjs.org/create-react-class/-/create-react-class-15.7.0.tgz"

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, FlatList, SafeAreaView, TouchableOpacity, Text} from 'react-native';
+import { StyleSheet, View, FlatList, SafeAreaView, TouchableOpacity, Text, ScrollView} from 'react-native';
 import RectangularListItem from './RectangularListItem';
 import { StatusBar } from 'expo-status-bar';
 import { getMyItinsFromServer } from './actions/itin';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { createStackNavigator } from '@react-navigation/stack';
 import ViewItinScreen from './ViewItinScreen';
+import CreateItinScreen from './CreateItinScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,7 +19,8 @@ const ItineraryRectangularList = ( {navigation} ) => {
     // const [items, setItems] = useState(data);
     const auth = useSelector(state => state.auth);
     const items = useSelector(state => state.itin);
-    
+
+
     const handleGetMyItinsFromServer = async () => {
       if (!auth["isAuthenticated"]) {
         alert("Please login first.")
@@ -31,13 +33,16 @@ const ItineraryRectangularList = ( {navigation} ) => {
       setLoading(false);
     }
 
-    const handleAddItem = () => {
-        // const newItem = { id: items.length + 1, title: `Item ${items.length + 1}`, subtitle: 'Subtitle' };
-        // setItems([...items, newItem]);
-        alert("handleAddItem called...")
+    const handleAddItem = (navigation) => {
+        navigation.navigate("CreateItinScreen", {itin: {
+          title: null,
+          description: null,
+          country: null,
+          state: null,
+          city: null,
+          itinerary: null,
+        }});
     };
-
-
 
     const ItinListScreen = ( {navigation} ) => {
       return (
@@ -64,7 +69,7 @@ const ItineraryRectangularList = ( {navigation} ) => {
               data={items}
               keyExtractor={item => item.tid.toString()}
               renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => navigation.navigate("ViewItinScreen", {tid:item.tid})}>
+                <TouchableOpacity onPress={() => navigation.navigate("ViewItinScreen", {itin: items.filter(obj => {return obj.tid === item.tid})[0]})}>
                   <RectangularListItem
                       title={item.title}
                       subtitle={item.description}
@@ -75,7 +80,7 @@ const ItineraryRectangularList = ( {navigation} ) => {
           <TouchableOpacity onPress={handleGetMyItinsFromServer} style={styles.button}>
               <Text style={styles.buttonText}>Refresh List</Text>
            </TouchableOpacity>
-          <TouchableOpacity onPress={handleAddItem} style={styles.button}>
+          <TouchableOpacity onPress={() => handleAddItem(navigation)} style={styles.button}>
               <Text style={styles.buttonText}>Create New Itinerary</Text>
            </TouchableOpacity>
       </SafeAreaView>
@@ -86,6 +91,7 @@ const ItineraryRectangularList = ( {navigation} ) => {
     <Stack.Navigator initialRouteName="SettingsRoot">
       <Stack.Screen name="ItinListScreen" component={ItinListScreen} options={{title: "Itineraries"}}/>
       <Stack.Screen name="ViewItinScreen" component={ViewItinScreen} options={{title: "View Itinerary", headerShown: false}}/>
+      <Stack.Screen name="CreateItinScreen" component={CreateItinScreen} options={{title: "Create Itinerary"}}/>
     </Stack.Navigator>
   );
 };
