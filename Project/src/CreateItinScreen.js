@@ -124,7 +124,7 @@ const CreateItinScreen = ( {route, navigation} ) => {
             onChangeText={setDescription}
         />
 
-      <Text style={styles.inputTitle}>Itinerary Country</Text>
+      <Text style={styles.inputTitle}>Country</Text>
       <SelectDropdown
         data={countryList}
         value={country}
@@ -132,7 +132,7 @@ const CreateItinScreen = ( {route, navigation} ) => {
           handleCountryOnChange(selectedItem)
         }}
       />
-      <Text style={styles.inputTitle}>Itinerary State/Province</Text>
+      <Text style={styles.inputTitle}>State/Province</Text>
       <SelectDropdown
         data={stateList}
         ref={stateRef}
@@ -141,7 +141,7 @@ const CreateItinScreen = ( {route, navigation} ) => {
           handleStateOnChange(selectedItem)
         }}
       />
-      <Text style={styles.inputTitle}>Itinerary City</Text>
+      <Text style={styles.inputTitle}>City</Text>
       <SelectDropdown
         data={cityList}
         ref={cityRef}
