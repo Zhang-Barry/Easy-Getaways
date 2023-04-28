@@ -19,7 +19,6 @@ export async function fetchData(url, method, body)
             const data = JSON.parse(JSON.stringify(await response.json()));
             return [false, data];
         } else {
-            console.log("hello")
             const data = JSON.parse(JSON.stringify(await response.json()));
             return [true, data];
         }
