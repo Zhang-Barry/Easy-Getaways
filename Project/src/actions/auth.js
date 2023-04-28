@@ -83,5 +83,11 @@ export const logout = () => {
                 type:"PURGE_ALL_LOCAL_ITIN"
             }
         )
+
+        dispatch(
+            {
+                type: "PURGE_ALL_LOCAL_PLACES"
+            }
+        )
     }
 }

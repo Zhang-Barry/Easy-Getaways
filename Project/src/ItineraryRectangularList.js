@@ -34,6 +34,10 @@ const ItineraryRectangularList = ( {navigation} ) => {
     }
 
     const handleAddItem = (navigation) => {
+      if (!auth["isAuthenticated"]) {
+        alert("Please login first.")
+        return;
+      }
         navigation.navigate("CreateItinScreen", {itin: {
           title: null,
           description: null,
