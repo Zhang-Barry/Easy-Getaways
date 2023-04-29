@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import {TRAVEL_ADVISOR_API_KEY} from '@env'
 
 export const getPlacesData = async (bl_lat, bl_lng, tr_lat, tr_lng, type) => {
   try {
@@ -19,7 +20,7 @@ export const getPlacesData = async (bl_lat, bl_lng, tr_lat, tr_lng, type) => {
           lang: "en_US",
         },
         headers: {
-          "X-RapidAPI-Key": "b5c0705a8dmsh21276bd82e94db6p10a3c0jsn7797a963e1bd",
+          "X-RapidAPI-Key": TRAVEL_ADVISOR_API_KEY,
           "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
         },
       }
