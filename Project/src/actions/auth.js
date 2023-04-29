@@ -2,6 +2,7 @@ import { Alert } from "react-native";
 import {REACT_APP_API_URL} from '@env'
 import { getMyItinsFromServer } from "./itin";
 import { fetchData } from "./fetchDataUtil";
+import { getMyPlacesFromServer } from "./places";
 
 export const login = (username, password) => {
     return async (dispatch) => {
@@ -34,6 +35,7 @@ export const login = (username, password) => {
         const uid = fetchResult[1]["user"]["pk"]
         // load itineraries once logged in.
         await getMyItinsFromServer(jwt, uid)(dispatch);
+        await getMyPlacesFromServer(jwt, uid)(dispatch);
     }
 }
 
@@ -72,6 +74,7 @@ export const register = (username, email, password, re_password) => {
 
 export const logout = () => {
     return (dispatch) => {
+
         dispatch(
             {
                 type: "LOGOUT"
@@ -89,5 +92,6 @@ export const logout = () => {
                 type: "PURGE_ALL_LOCAL_PLACES"
             }
         )
+
     }
 }
