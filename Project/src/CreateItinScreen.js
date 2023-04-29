@@ -89,7 +89,31 @@ const CreateItinScreen = ( {route, navigation} ) => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    await insertNewItin(jwt, uid, title, city, state, country, description, itinerary)(dispatch);
+    
+    const testItin = [
+      {
+        "extra_info": {},   // leave blank for now
+        "place_json": {     // this is the JSON from the API response for this specific place.
+          "name": "McDonalds",
+          "type": "Restaurant",
+          "location": "New York, NY",
+          "url": "https://www.google.com/",
+        }
+      },
+      {
+        "extra_info": {},
+        "place_json": {
+          "name": "911",
+          "type": "Attraction",
+          "location": "New York, NY",
+          "url": "https://www.google.com/",
+        }
+      },
+    ]
+    await insertNewItin(jwt, uid, title, city, state, country, description, testItin)(dispatch);
+
+
+    // await insertNewItin(jwt, uid, title, city, state, country, description, itinerary)(dispatch);
     await (getMyItinsFromServer)(jwt, uid)(dispatch);
     setLoading(false);
     navigation.goBack()
