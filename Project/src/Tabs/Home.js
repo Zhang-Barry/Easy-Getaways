@@ -25,6 +25,8 @@ export default function Home({ navigation }) {
     const [tr_lat, setTr_lat] = useState(null);
     const [tr_lng, setTr_lng] = useState(null);
 
+    console.log(mainData);
+
 
     useEffect(() => {
         setIsLoading(true);
@@ -65,7 +67,7 @@ export default function Home({ navigation }) {
             )}</Text> */}
 
             {/* Code below is for components but not working */}
-            <View className="px-4 mt-8 flex-row items-center justify-evenly flex-wrap">
+            {/* <View className="px-4 mt-8 flex-row items-center justify-evenly flex-wrap">
               {mainData?.length > 0 ? (
                 <>
                   {mainData?.map((data, i) => (
@@ -84,7 +86,7 @@ export default function Home({ navigation }) {
                   </View>
                 </>
               )}
-            </View>
+            </View> */}
         </View>
     );
 }
