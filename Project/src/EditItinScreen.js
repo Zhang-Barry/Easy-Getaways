@@ -125,7 +125,7 @@ const EditItinScreen = ( {route, navigation} ) => {
     return (
       <TouchableOpacity style={styles.placeContainer} onPress={ () => handlePlacePress(index) }>
         <Text style={{fontSize:25}}>{item.place_json.name}</Text>
-        <Text>{item.place_json.location}</Text>
+        <Text>{item.place_json.address}</Text>
       </TouchableOpacity>
     )
   }

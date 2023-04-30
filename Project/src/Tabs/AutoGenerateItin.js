@@ -109,18 +109,24 @@ export default function AutoGenerateItin({ navigation }) {
       }, [bl_lat, bl_lng, tr_lat, tr_lng, type]);
 
       const wrapPlacesData = (placesObj) => {
+
+        // return {
+        //   "extra_info": {},
+        //   "place_json": {
+        //     "name" : placesObj ? placesObj?.name : "",
+        //     "type" : placesObj ? placesObj?.category?.name : "",
+        //     "location" : placesObj ? placesObj?.address : "",
+        //     "url" : placesObj ? placesObj?.website : "",
+        //   }
+        // }
+
+        console.log(JSON.stringify(placesObj))
+
         return {
           "extra_info": {},
-          "place_json": {
-            "name" : placesObj ? placesObj?.name : "",
-            "type" : placesObj ? placesObj?.category?.name : "",
-            "location" : placesObj ? placesObj?.address : "",
-            "url" : placesObj ? placesObj?.website : "",
-          }
+          "place_json": placesObj
         }
       }
-
-
 
       const generateItinerary = () => {
         if (mainData.length == 0) {

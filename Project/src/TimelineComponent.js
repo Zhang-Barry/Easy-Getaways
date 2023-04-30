@@ -7,8 +7,8 @@ const TimelinePlaceComponent = ( {item, index} ) => {
       <View style={styles.placeIndexContainer}><Text style={{fontSize: 30, fontWeight: 800, color:"lightgray"}}>{++index}</Text></View>
       <View>
         <Text style={{fontSize: 25, fontWeight:500}}>{item?.place_json?.name}</Text>
-        <Text style={styles.subText}>{item?.place_json?.type}</Text>
-        <Text>{item?.place_json?.location}</Text>
+        <Text style={styles.subText}>{item?.place_json?.category?.name}</Text>
+        <Text>{item?.place_json?.address}</Text>
       </View>
     </View>
   )
