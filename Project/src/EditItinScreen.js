@@ -213,7 +213,7 @@ const EditItinScreen = ( {route, navigation} ) => {
       <Text style={styles.titleTextSecondary}>Destinations</Text>
       {
         (itinerary.map) ?
-        (itinerary.map( (item, index) => <DestinationEditableComponent item={item} index={index}/> )):
+        (itinerary.map( (item, index) => <DestinationEditableComponent item={item} index={index} key={index}/> )):
         <Text>Invalid.</Text>
       }
         <Button title="+ Add Destination" onPress={handleAddDestinationPress}/>

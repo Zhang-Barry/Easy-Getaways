@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import { StyleSheet, FlatList, SafeAreaView, TouchableOpacity, Text, ScrollView} from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView, TouchableOpacity, Text, Alert} from 'react-native';
 import RectangularListItem from '../RectangularListItem';
 import { StatusBar } from 'expo-status-bar';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { createStackNavigator } from '@react-navigation/stack';
-import { getMyPlacesFromServer } from '../actions/places';
+import { getMyPlacesFromServer, deletePlace } from '../actions/places';
 
 const Stack = createStackNavigator();
 
@@ -56,7 +56,7 @@ const PlacesTab = ( {navigation} ) => {
               keyExtractor={item => item.place_id.toString()}
               renderItem={({ item }) => (
 
-                <TouchableOpacity onPress={ () => alert("PRESSED.") }>
+                <TouchableOpacity onPress={ () => handlePress(item?.place_id) }>
                   <RectangularListItem
                       title={JSON.stringify(item)}
                       subtitle={"SUBTITILE"}
@@ -73,6 +73,31 @@ const PlacesTab = ( {navigation} ) => {
       </SafeAreaView>
       )
     }
+
+  const handlePress = (place_id) => {
+
+    Alert.alert('Unsave Place', 'Are you sure you want to unsave this place?', [
+      {
+        text: 'Unsave',
+        style: 'destructive',
+        onPress: () => handleDelete(place_id),
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+
+  }    
+
+  const handleDelete = async (place_id) => {
+    setLoading(true);
+    const jwt = auth["access"]
+    const uid = auth["user"]["pk"]
+    await deletePlace(jwt, uid, place_id)(dispatch);
+    await getMyPlacesFromServer(jwt, uid)(dispatch);
+    setLoading(false);
+  }
 
   return (
     <Stack.Navigator initialRouteName="SettingsRoot">

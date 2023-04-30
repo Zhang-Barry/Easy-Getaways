@@ -52,7 +52,7 @@ function MainContainer() {
         }}>
 
         <Tab.Screen name={homeName} component={Home} />
-        <Tab.Screen name={placesName} component={Places} />
+        <Tab.Screen name={placesName} component={Places} options={{title: "Saved Places"}}/>
         <Tab.Screen name={itinerariesName} component={Itineraries} options={{headerShown: false}}/>
         <Tab.Screen name={settingsName} component={Settings} options={{headerShown: false}}/>
 
