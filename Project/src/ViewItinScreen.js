@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMyItinsFromServer } from './actions/itin';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import TimelineComponent from './TimelineComponent';
+import * as Clipboard from 'expo-clipboard';
+import {REACT_APP_API_URL} from '@env'
 
 const Stack = createStackNavigator();
 
@@ -36,6 +38,7 @@ const ViewItinScreen = ( {route, navigation} ) => {
   }
 
   const handleDeleteOnClick = () => {
+
     Alert.alert('Delete Itinerary?', 'Deleted itineraries cannot be recovered', [
       {
         text: 'Delete',
@@ -45,6 +48,19 @@ const ViewItinScreen = ( {route, navigation} ) => {
       {
         text: 'Cancel',
         style: 'cancel',
+      },
+    ]);
+
+  }
+
+  const handleShare = async () => {
+    const shareUrl = `${REACT_APP_API_URL}/itineraries/view_itin?tid=${itin.tid}`;
+    await Clipboard.setStringAsync(shareUrl);
+
+    Alert.alert('Share', 'Itinerary URL has been copied to clipboard.', [
+      {
+        text: 'OK',
+        style: 'normal',
       },
     ]);
 
@@ -62,6 +78,8 @@ const ViewItinScreen = ( {route, navigation} ) => {
     return <Text style={styles.locationText}>{itin.city}, {itin.state}, {itin.country}</Text>
   }
 
+  console.log(itin.description.length)
+
   const ViewItinPage = () => {
     return (
       <ScrollView>
@@ -75,16 +93,18 @@ const ViewItinScreen = ( {route, navigation} ) => {
           <Text style={styles.titleText}>{itin.title}</Text>
           {/* <Text style={styles.locationText}>{itin.city}, {itin.state}, {itin.country}</Text> */}
           {renderLocation()}
-          <Text style={styles.descriptionText}>{itin.description}</Text>
+          <Text style={styles.descriptionText}>{ (itin.description.length > 1) ? itin.description : "This itinerary does not have a description." }</Text>
           <Text style={styles.metadataText}>Created at {itin.created_at}</Text>
-          <Text style={styles.titleTextSecondary}>Timeline</Text>
-          <TimelineComponent/>
-    
+          <Text style={styles.titleTextSecondary}>Destinations</Text>
+          <TimelineComponent itin={itin}/>
 
           {
             (itin.created_by == uid) ?
               <View>
                 <View style={{marginTop: 50}}></View>
+                <TouchableOpacity title="Share Itinerary" style={styles.button} onPress={() => handleShare()}>
+                  <Text style={styles.buttonText} >Share...</Text>
+                </TouchableOpacity>
                 <TouchableOpacity title="Edit Itinerary" style={styles.button} onPress={() => navigation.navigate("EditItinScreen", {itin: itin})}>
                   <Text style={styles.buttonText} >Edit</Text>
                 </TouchableOpacity>
@@ -138,7 +158,6 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     marginTop: 5,
-    fontSize: 16,
   },
   metadataText: {
     marginTop: 15,
