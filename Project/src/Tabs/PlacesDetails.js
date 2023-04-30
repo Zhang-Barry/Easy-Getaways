@@ -7,7 +7,7 @@ import { getPlacesData } from "../handlers/travelAPI";
 
 import {ItemCarDontainer} from "../containers/ItemCarDontainer"
 export default function PlacesDetails({ navigation }) {
-    const [type, setType] = useState("restaurants");
+    const [type, setType] = useState("attractions");
     const [isLoading, setIsLoading] = useState(false);
     const [mainData, setMainData] = useState([]);
 
