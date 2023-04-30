@@ -96,11 +96,11 @@ export default function Home({ navigation }) {
             <ScrollView>
               <View>
                 <View className="flex-row items-center justify-between px-4 mt-8">
-                  <Text className="text-[28px] font-bold">Popular</Text>
-                  <TouchableOpacity className="flex-row items-center justify-center space-x-2">
+                  <Text className="text-[28px] font-bold">Nearby Destinations</Text>
+                  {/* <TouchableOpacity className="flex-row items-center justify-center space-x-2">
                     <Text className="text-[18px] text-gray-500 font-bold">Explore</Text>
                     <FontAwesome name="long-arrow-right" size={20} color="gray"/>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
 
                 <View className="px-2 mt-8 flex-row items-center justify-evenly flex-wrap">
