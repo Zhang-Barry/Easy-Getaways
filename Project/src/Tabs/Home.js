@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import {GOOGLE_PLACES_API_KEY} from '@env'
 import { getPlacesData } from "../handlers/travelAPI";
@@ -40,7 +40,7 @@ export default function Home({ navigation }) {
 
     return (
         // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <View style={{flex : 1}}>
+        <View style={{flex : 1, justifyContent: "space-between", backgroundColor: "beige"}}>
             {/* <Text
                 onPress={() => alert('This is the "Home" screen.')}
                 style={{ fontSize: 26, fontWeight: 'bold' }}>Home Screen 
@@ -62,6 +62,12 @@ export default function Home({ navigation }) {
                     language: 'en',
                 }}
             />
+            
+            <TouchableOpacity onPress={() => alert("pressed")}>
+              <Image style={{alignItems: "center", justifyContent: "center", height: 400, width: 400, resizeMode: "stretch"}} 
+              source={require("../../assets/attractions_icon.png")} />
+              <Text style={{textAlign: "center", alignContent: "center", justifyContent: "space-around"}}>Attractions</Text>
+            </TouchableOpacity>
             {/* <Text>Restaurants: {mainData?.map((data,i)=> 
                 data?.name
             )}</Text> */}
