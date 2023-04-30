@@ -43,13 +43,11 @@ function MainContainer() {
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-        })}
-        tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'grey',
-          labelStyle: { paddingBottom: 10, fontSize: 10 },
-          tabStyle: { padding: 10, height: 70}
-        }}>
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'grey',
+          tabBarLabelStyle: { paddingBottom: 0, fontSize: 10 },
+          tabBarStyle: { padding: 10, height: 80 }
+        })}>
 
         <Tab.Screen name={homeName} component={Home} />
         <Tab.Screen name={placesName} component={Places} options={{title: "Saved Places"}}/>

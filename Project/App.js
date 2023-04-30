@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 import ItineraryRectangularList from './src/ItineraryRectangularList';
 import Settings from './src/Tabs/Settings';
 import TabNav from './src/Tabs/TabNav';
@@ -29,13 +29,4 @@ export default function App() {
     // // </NavigationContainer>     //
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
