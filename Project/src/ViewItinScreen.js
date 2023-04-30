@@ -54,7 +54,7 @@ const ViewItinScreen = ( {route, navigation} ) => {
   }
 
   const handleShare = async () => {
-    const shareUrl = `${REACT_APP_API_URL}/itineraries/view_itin?tid=${itin.tid}`;
+    const shareUrl = `${REACT_APP_API_URL}/itineraries/view_itin/${itin.tid}`;
     await Clipboard.setStringAsync(shareUrl);
 
     Alert.alert('Share', 'Itinerary URL has been copied to clipboard.', [
@@ -96,13 +96,13 @@ const ViewItinScreen = ( {route, navigation} ) => {
           <Text style={styles.titleTextSecondary}>Destinations</Text>
           <TimelineComponent itin={itin}/>
 
+          <TouchableOpacity title="Share Itinerary" style={styles.button} onPress={() => handleShare()}>
+                  <Text style={styles.buttonText} >Share...</Text>
+          </TouchableOpacity>
           {
             (itin.created_by == uid) ?
               <View>
                 <View style={{marginTop: 50}}></View>
-                <TouchableOpacity title="Share Itinerary" style={styles.button} onPress={() => handleShare()}>
-                  <Text style={styles.buttonText} >Share...</Text>
-                </TouchableOpacity>
                 <TouchableOpacity title="Edit Itinerary" style={styles.button} onPress={() => navigation.navigate("EditItinScreen", {itin: itin})}>
                   <Text style={styles.buttonText} >Edit</Text>
                 </TouchableOpacity>
