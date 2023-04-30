@@ -78,8 +78,6 @@ const ViewItinScreen = ( {route, navigation} ) => {
     return <Text style={styles.locationText}>{itin.city}, {itin.state}, {itin.country}</Text>
   }
 
-  console.log(itin.description.length)
-
   const ViewItinPage = () => {
     return (
       <ScrollView>

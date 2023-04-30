@@ -8,6 +8,7 @@ import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { createStackNavigator } from '@react-navigation/stack';
 import ViewItinScreen from './ViewItinScreen';
 import CreateItinScreen from './CreateItinScreen';
+import AutoGenerateItin from './Tabs/AutoGenerateItin';
 
 const Stack = createStackNavigator();
 
@@ -87,6 +88,9 @@ const ItineraryRectangularList = ( {navigation} ) => {
           <TouchableOpacity onPress={() => handleAddItem(navigation)} style={styles.button}>
               <Text style={styles.buttonText}>Create New Itinerary</Text>
            </TouchableOpacity>
+           <TouchableOpacity onPress={() => navigation.navigate("AutoGenerateScreen")} style={styles.button}>
+              <Text style={styles.buttonText}>Auto-Generate Itinerary</Text>
+           </TouchableOpacity>
       </SafeAreaView>
       )
     }
@@ -96,6 +100,7 @@ const ItineraryRectangularList = ( {navigation} ) => {
       <Stack.Screen name="ItinListScreen" component={ItinListScreen} options={{title: "Itineraries"}}/>
       <Stack.Screen name="ViewItinScreen" component={ViewItinScreen} options={{title: "View Itinerary", headerShown: false}}/>
       <Stack.Screen name="CreateItinScreen" component={CreateItinScreen} options={{title: "Create Itinerary"}}/>
+      <Stack.Screen name="AutoGenerateScreen" component={AutoGenerateItin} options={{title: "Auto-Generate Itinerary"}}/>
     </Stack.Navigator>
   );
 };

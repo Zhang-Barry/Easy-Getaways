@@ -94,7 +94,7 @@ const CreateItinScreen = ( {route, navigation} ) => {
       {
         "extra_info": {},   // leave blank for now
         "place_json": {     // this is the JSON from the API response for this specific place.
-          "name": "McDonalds",
+          "name": "Wendy's",
           "type": "Restaurant",
           "location": "New York, NY",
           "url": "https://www.google.com/",

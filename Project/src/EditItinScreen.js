@@ -7,8 +7,6 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { Country, State, City }  from 'country-state-city';
 import { editItin, getMyItinsFromServer } from './actions/itin';
 
-
-
 const EditItinScreen = ( {route, navigation} ) => {
 
   const dispatch = useDispatch();
@@ -160,8 +158,8 @@ const EditItinScreen = ( {route, navigation} ) => {
       />
 
 
-      <Text style={styles.titleTextSecondary}>Timeline</Text>
-      <Text>TODO</Text>
+      <Text style={styles.titleTextSecondary}>Destinations</Text>
+      <Text>{JSON.stringify(itinerary)}</Text>
 
 
         <TextInput>{"\n\n"}</TextInput>
