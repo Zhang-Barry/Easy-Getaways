@@ -32,10 +32,10 @@ export default function PlacesDetails({ navigation }) {
             {
                 "extra_info": {},
                 "place_json": {
-                    "name" : mainData ? mainData[0]?.name : "",
-                    "type" : mainData ? mainData[0]?.category?.name : "",
-                    "location" : mainData ? mainData[0]?.address : "",
-                    "url" : mainData ? mainData[0]?.website : "",
+                    "name" : mainData[0] ? mainData[0]?.name : "",
+                    "type" : mainData[0] ? mainData[0]?.category?.name : "",
+                    "location" : mainData[0] ? mainData[0]?.address : "",
+                    "url" : mainData[0] ? mainData[0]?.website : "",
                 }
             }
           ]

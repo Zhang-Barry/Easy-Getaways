@@ -25,7 +25,7 @@ export default function Home({ navigation }) {
     const [tr_lat, setTr_lat] = useState(null);
     const [tr_lng, setTr_lng] = useState(null);
 
-    console.log(mainData);
+    console.log(mainData)
 
 
     useEffect(() => {
