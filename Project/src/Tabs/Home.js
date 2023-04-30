@@ -1,10 +1,6 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-<<<<<<< Updated upstream
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-=======
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
->>>>>>> Stashed changes
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import {GOOGLE_PLACES_API_KEY} from '@env'
 import { getPlacesData } from "../handlers/travelAPI";
@@ -22,13 +18,8 @@ export default function Home({ navigation }) {
     // })
     // .catch(error => console.error(error));
     // const fetchResult = await fetchData(`${REACT_APP_API_URL}/dj-rest-auth/registration/`, 'POST', body);
-<<<<<<< Updated upstream
-    const [type, setType] = useState("attractions");
-    const [isLoading, setIsLoading] = useState(false);
-=======
     const [type, setType] = useState("restaurants");
     const [isLoading, setIsLoading] = useState(true);
->>>>>>> Stashed changes
     const [mainData, setMainData] = useState([]);
 
 
@@ -37,12 +28,7 @@ export default function Home({ navigation }) {
     const [tr_lat, setTr_lat] = useState(null);
     const [tr_lng, setTr_lng] = useState(null);
 
-<<<<<<< Updated upstream
-    console.log(mainData)
-
-=======
     console.log(mainData);
->>>>>>> Stashed changes
 
     useEffect(() => {
         setIsLoading(true);
@@ -56,62 +42,6 @@ export default function Home({ navigation }) {
 
     return (
         // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-<<<<<<< Updated upstream
-        <View style={{flex : 1, justifyContent: "space-between", backgroundColor: "beige"}}>
-            {/* <Text
-                onPress={() => alert('This is the "Home" screen.')}
-                style={{ fontSize: 26, fontWeight: 'bold' }}>Home Screen 
-            </Text> */}
-            <GooglePlacesAutocomplete
-                GooglePlacesDetailsQuery={{fields: "geometry"}}
-                placeholder='Search'
-                fetchDetails={true}
-                onPress={(data, details = null) => {
-                    // 'details' is provided when fetchDetails = true
-                    console.log(details?.geometry?.viewport);
-                    setBl_lat(details?.geometry?.viewport?.southwest?.lat);
-                    setBl_lng(details?.geometry?.viewport?.southwest?.lng);
-                    setTr_lat(details?.geometry?.viewport?.northeast?.lat);
-                    setTr_lng(details?.geometry?.viewport?.northeast?.lng);
-                }}
-                query={{
-                    key: GOOGLE_PLACES_API_KEY,
-                    language: 'en',
-                }}
-            />
-            
-            <TouchableOpacity onPress={() => alert("pressed")}>
-              <Image style={{alignItems: "center", justifyContent: "center", height: 400, width: 400, resizeMode: "stretch"}} 
-              source={require("../../assets/attractions_icon.png")} />
-              <Text style={{textAlign: "center", alignContent: "center", justifyContent: "space-around"}}>Attractions</Text>
-            </TouchableOpacity>
-            {/* <Text>Restaurants: {mainData?.map((data,i)=> 
-                data?.name
-            )}</Text> */}
-
-            {/* Code below is for components but not working */}
-            {/* <View className="px-4 mt-8 flex-row items-center justify-evenly flex-wrap">
-              {mainData?.length > 0 ? (
-                <>
-                  {mainData?.map((data, i) => (
-                    <ItemCarDontainer
-                      title={data?.name}
-                      location={data?.location_string}
-                    />
-                  ))}
-                </>
-              ) : (
-                <>
-                  <View>
-                    <Text>
-                      Oops...No Data Found
-                    </Text>
-                  </View>
-                </>
-              )}
-            </View> */}
-        </View>
-=======
         <SafeAreaView className="flex-1 relative">
           <View className="flex-row items-center mx-4 rounded-xl py-1 px-4 mt-4 shadow-lg">
               <GooglePlacesAutocomplete
@@ -202,6 +132,5 @@ export default function Home({ navigation }) {
             </ScrollView>)
           }
         </SafeAreaView>
->>>>>>> Stashed changes
     );
 }
