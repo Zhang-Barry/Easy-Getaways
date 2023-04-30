@@ -23,7 +23,9 @@ export default function TimelineComponent({ navigation, itin }) {
               :
               <>
                 {
-                  itin?.itinerary.map( (item, index) => <TimelinePlaceComponent item={item} index={index}/> )
+                  (itin.itinerary.map) ?
+                    (itin?.itinerary.map( (item, index) => <TimelinePlaceComponent item={item} index={index}/> )):
+                    <Text>Invalid.</Text>
                 }
                 <Text style={styles.endText}> ● END OF ITINERARY</Text>
               </>

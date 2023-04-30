@@ -131,19 +131,30 @@ export default function AutoGenerateItin({ navigation }) {
         console.log(mainData);
 
         // randomlySelected.push(    wrapPlacesData(mainData[Math.floor((Math.random()*mainData.length))])  );
-        const mainDataCopy = [...mainData];
+        let mainDataCopy = [...mainData];
         let count = 0;
-        while (count < 4 && mainDataCopy.length != 0) {
-          randomlySelected.push( wrapPlacesData( mainDataCopy.pop(Math.floor((Math.random()*mainData.length))) ) )
+        while (count < 5) {
+          if (mainDataCopy.length == 0) break;
           count += 1;
+          const index = Math.floor((Math.random()*mainData.length));
+          if (!mainDataCopy[index]) continue;
+          randomlySelected.push(  wrapPlacesData( mainDataCopy[index]) )
+          mainDataCopy.splice(index, 1); 
         }
 
         return randomlySelected;
       }
 
       const handleSubmission = async () => {
-        if (!authInfo.isAuthenticated) alert("Please log in first.");
+        if (!authInfo.isAuthenticated) {
+          alert("Please log in first.");
+          return;
+        }
         const autoItin = generateItinerary();
+        if (autoItin.length == 0 || !autoItin) {
+          alert("Could not find any attractions nearby.");
+          return;
+        }
         setSpinnerLoading(true);
         await insertNewItin(authInfo["access"], authInfo["user"]["pk"], "Auto-Generated Itinerary", null, null, null, "This is an auto-generated itinerary.", autoItin)(dispatch);
         await getMyItinsFromServer(authInfo["access"], authInfo["user"]["pk"])(dispatch);

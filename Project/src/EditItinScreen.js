@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { Text, View, TextInput, Button, StyleSheet, ScrollView,  } from 'react-native';
+import { Text, View, TextInput, Button, StyleSheet, ScrollView, Alert, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import SelectDropdown from 'react-native-select-dropdown'
 import { Country, State, City }  from 'country-state-city';
 import { editItin, getMyItinsFromServer } from './actions/itin';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const EditItinScreen = ( {route, navigation} ) => {
 
@@ -94,6 +95,56 @@ const EditItinScreen = ( {route, navigation} ) => {
     navigation.goBack();
   }
 
+  const deleteDestination = (index) => {
+    let newItin = [...itinerary];
+    newItin.splice(index, 1); // 2nd parameter means remove one item only
+    
+    setItinerary(newItin);
+  }
+
+  const addDestination = (destinationObj) => {
+    destinationObj = {
+      "extra_info": {},
+      "place_json": {
+        "name": "NEW_DEST",
+        "location": "NEW YORK",
+        "type": "TEST DESTINATION",
+        "url": "https://google.com/"
+      }
+    }
+    let newItin = [...itinerary, destinationObj];
+    setItinerary(newItin)
+  }
+
+  const handleAddDestinationPress = () => {
+    addDestination()
+  }
+
+  const DestinationEditableComponent = ( {item, index} ) => {
+    return (
+      <TouchableOpacity style={styles.placeContainer} onPress={ () => handlePlacePress(index) }>
+        <Text style={{fontSize:25}}>{item.place_json.name}</Text>
+        <Text>{item.place_json.location}</Text>
+      </TouchableOpacity>
+    )
+  }
+  
+  const handlePlacePress = (index) => {
+  
+    Alert.alert('Delete Destination', 'Delete Destination from your itinerary?', [
+      {
+        text: 'Delete',
+        onPress: () => deleteDestination(index),
+        style: 'destructive',
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+  
+  }
+
   return (
     <View style={styles.container}>
 
@@ -159,7 +210,13 @@ const EditItinScreen = ( {route, navigation} ) => {
 
 
       <Text style={styles.titleTextSecondary}>Destinations</Text>
-      <Text>{JSON.stringify(itinerary)}</Text>
+      {
+        (itinerary.map) ?
+        (itinerary.map( (item, index) => <DestinationEditableComponent item={item} index={index}/> )):
+        <Text>Invalid.</Text>
+      }
+        <Button title="+ Add Destination" onPress={handleAddDestinationPress}/>
+      {/* <Text>{JSON.stringify(itinerary)}</Text> */}
 
 
         <TextInput>{"\n\n"}</TextInput>
@@ -170,6 +227,7 @@ const EditItinScreen = ( {route, navigation} ) => {
       </ScrollView>
     </View>
   );
+
 };
 
 const styles = StyleSheet.create({
@@ -198,7 +256,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 700,
     marginTop: 30,
-  }
+  },  
+  placeContainer: {
+    display: "flex",
+    backgroundColor: "lightgray",
+    marginTop: 5,
+    padding: 10,
+    borderRadius: 10,
+  },
 });
 
 export default EditItinScreen;
