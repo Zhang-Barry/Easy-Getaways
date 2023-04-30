@@ -4,6 +4,7 @@ import {TRAVEL_ADVISOR_API_KEY} from '@env'
 export const getPlacesData = async (bl_lat, bl_lng, tr_lat, tr_lng, type) => {
   try {
 
+    console.log(type)
     let limit = "50";
     if (type == "attractions") {
       limit = "150";
@@ -12,7 +13,7 @@ export const getPlacesData = async (bl_lat, bl_lng, tr_lat, tr_lng, type) => {
     const {
       data: { data },
     } = await axios.get(
-      `https://travel-advisor.p.rapidapi.com/attractions/list-in-boundary`,
+      `https://travel-advisor.p.rapidapi.com/${type}/list-in-boundary`,
       {
         params: {
           bl_latitude: bl_lat ? bl_lat : "",

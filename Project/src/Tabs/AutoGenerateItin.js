@@ -7,6 +7,7 @@ import { getPlacesData } from "../handlers/travelAPI";
 import { useSelector, useDispatch } from 'react-redux';
 import { getMyItinsFromServer, insertNewItin } from '../actions/itin';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { insertNewPlace } from '../actions/places';
 
 
 const styles = StyleSheet.create({
@@ -128,6 +129,13 @@ export default function AutoGenerateItin({ navigation }) {
         }
       }
 
+      const savePlace = async (json) => {
+        const jwt = authInfo["access"]
+        const uid = authInfo["user"]["pk"]
+        await insertNewPlace(jwt, uid, json, supressAlert=true)(dispatch);
+        await getMyPlacesFromServer(jwt, uid)(dispatch);
+      }
+
       const generateItinerary = () => {
         if (mainData.length == 0) {
           alert("Could not find any nearby destinations.")
@@ -145,7 +153,11 @@ export default function AutoGenerateItin({ navigation }) {
           const index = Math.floor((Math.random()*mainData.length));
           if (!mainDataCopy[index]) continue;
           if (!mainDataCopy[index].name) continue;
+
+          // savePlace(mainDataCopy[index]);
+
           randomlySelected.push(  wrapPlacesData( mainDataCopy[index]) )
+
           mainDataCopy.splice(index, 1); 
         }
 

@@ -21,6 +21,7 @@ export default function Home({ navigation }) {
     const [type, setType] = useState("restaurants");
     const [isLoading, setIsLoading] = useState(true);
     const [mainData, setMainData] = useState([]);
+    const [mainDataRest, setMainDataRest] = useState([]); // for restaurants
 
 
     const [bl_lat, setBl_lat] = useState(null);
@@ -31,14 +32,29 @@ export default function Home({ navigation }) {
     console.log(mainData);
 
     useEffect(() => {
+
+
         setIsLoading(true);
-        getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, type).then((data) => {
+
+
+        getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "attractions").then((data) => {
           setMainData(data);
           setInterval(() => {
             setIsLoading(false);
           }, 2000);
         });
-      }, [bl_lat, bl_lng, tr_lat, tr_lng, type]);
+
+
+        getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "restaurants").then((data) => {
+          setMainDataRest(data);
+          setInterval(() => {
+            setIsLoading(false);
+          }, 2000);
+        });
+
+
+      }, [bl_lat]);
+      // }, [bl_lat, bl_lng, tr_lat, tr_lng, type]);
 
     return (
         // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -96,7 +112,7 @@ export default function Home({ navigation }) {
             <ScrollView>
               <View>
                 <View className="flex-row items-center justify-between px-4 mt-8">
-                  <Text className="text-[28px] font-bold">Nearby Destinations</Text>
+                  <Text className="text-[28px] font-bold">Attractions</Text>
                   {/* <TouchableOpacity className="flex-row items-center justify-center space-x-2">
                     <Text className="text-[18px] text-gray-500 font-bold">Explore</Text>
                     <FontAwesome name="long-arrow-right" size={20} color="gray"/>
@@ -115,7 +131,9 @@ export default function Home({ navigation }) {
                           "https://pixabay.com/photos/architecture-building-skyscraper-7947727/"
                         } 
                         title={data?.name}
-                        location={data?.location_string} />
+                        location={data?.location_string} 
+                        json={data}
+                        />
                       ))}
                     </>
                   ) : (
@@ -127,8 +145,51 @@ export default function Home({ navigation }) {
                     </>
                   )}
                 </View>
-
               </View>
+
+
+
+
+              <View>
+                <View className="flex-row items-center justify-between px-4 mt-8">
+                  <Text className="text-[28px] font-bold">Restaurants</Text>
+                  {/* <TouchableOpacity className="flex-row items-center justify-center space-x-2">
+                    <Text className="text-[18px] text-gray-500 font-bold">Explore</Text>
+                    <FontAwesome name="long-arrow-right" size={20} color="gray"/>
+                    </TouchableOpacity> */}
+                </View>
+
+                <View className="px-2 mt-8 flex-row items-center justify-evenly flex-wrap">
+                  {mainDataRest?.length > 0 ? (
+                    <>
+                      {mainDataRest?.map((data, i) => (
+                        <ItemCardContainer 
+                        key={i} 
+                        imageSrc= {
+                          data?.photo?.images?.medium?.url ?
+                          data?.photo?.images?.medium?.url :
+                          "https://pixabay.com/photos/architecture-building-skyscraper-7947727/"
+                        } 
+                        title={data?.name}
+                        location={data?.location_string}
+                        json={data}
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      <View className="w-full h-[400px] items-center sapce-y-8 justify-center">
+                        <Image source={notfound} className="w-32 h-32 object-cover"/>
+                        <Text className="text-[16px] my-5 font-semibold"> Oops! No Data Found...</Text>
+                      </View>
+                    </>
+                  )}
+                </View>
+              </View>
+
+
+
+
             </ScrollView>)
           }
         </SafeAreaView>

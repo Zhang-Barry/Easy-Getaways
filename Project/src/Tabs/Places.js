@@ -58,8 +58,8 @@ const PlacesTab = ( {navigation} ) => {
 
                 <TouchableOpacity onPress={ () => handlePress(item?.place_id) }>
                   <RectangularListItem
-                      title={JSON.stringify(item)}
-                      subtitle={"SUBTITILE"}
+                      title={item?.place_json?.name}
+                      subtitle={`${item?.place_json?.category?.name}\n${item?.place_json?.address}`}
                   />
                 </TouchableOpacity>
 

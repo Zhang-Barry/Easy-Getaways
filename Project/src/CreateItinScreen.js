@@ -43,6 +43,12 @@ const CreateItinScreen = ( {route, navigation} ) => {
   const [cityList, setCityList] = useState( [] );
 
 
+
+  
+
+  const myPlaces = useSelector(state => state.places);
+
+
   // const [stateDropDownDisabled, setStateDropDownDisabled] = useState(false);
   // const [cityDropDownDisabled, setCityDropDownDisabled] = useState(false);
 
@@ -104,17 +110,12 @@ const CreateItinScreen = ( {route, navigation} ) => {
   }
 
   const addDestination = (destinationObj) => {
-    destinationObj = {
-      "extra_info": {},
-      "place_json": {
-        "name": "Destination",
-        "location": "New York",
-        "type": "School",
-        "url": "https://google.com/"
-      }
-    }
+    // const newObj = {
+    //   "extra_info": {},
+    //   "place_json": destinationObj
+    // }
     let newItin = [...itinerary, destinationObj];
-    setItinerary(newItin)
+    setItinerary(newItin);
   }
 
 
@@ -122,29 +123,33 @@ const CreateItinScreen = ( {route, navigation} ) => {
     addDestination()
   }
 
-  const DestinationEditableComponent = ( {item, index} ) => {
+  const DestinationEditableComponent = ( {item, index, type} ) => {
     return (
-      <TouchableOpacity style={styles.placeContainer} onPress={ () => handlePlacePress(index) }>
+      <TouchableOpacity style={styles.placeContainer} onPress={ () => handlePlacePress(index, type, item) }>
         <Text style={{fontSize:25}}>{item.place_json.name}</Text>
         <Text>{item.place_json.address}</Text>
       </TouchableOpacity>
     )
   }
   
-  const handlePlacePress = (index) => {
-  
-    Alert.alert('Delete Destination', 'Delete Destination from your itinerary?', [
-      {
-        text: 'Delete',
-        onPress: () => deleteDestination(index),
-        style: 'destructive',
-      },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-    ]);
-  
+  const handlePlacePress = (index, type, item) => {
+    if (type == "delete") {
+        Alert.alert('Delete Destination', 'Delete Destination from your itinerary?', [
+          {
+            text: 'Delete',
+            onPress: () => deleteDestination(index),
+            style: 'destructive',
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ]);
+    }
+    else {
+      addDestination(item)
+    }
+
   }
 
   return (
@@ -214,10 +219,17 @@ const CreateItinScreen = ( {route, navigation} ) => {
       <Text style={styles.titleTextSecondary}>Destinations</Text>
       {
         (itinerary && itinerary.map) ?
-        (itinerary.map( (item, index) => <DestinationEditableComponent item={item} index={index}/> )):
+        (itinerary.map( (item, index) => <DestinationEditableComponent item={item} index={index} type={"delete"}/> )):
         <Text>Invalid.</Text>
       }
-        <Button title="+ Add Destination" onPress={handleAddDestinationPress}/>
+      <Text>● END OF ITINERARY</Text>
+      <Text style={{fontSize:21, fontWeight: "bold", marginTop: 5}}>Add a Saved Destination</Text>
+      {
+        (myPlaces && myPlaces.map) ?
+        (myPlaces.map( (item, index) => <DestinationEditableComponent item={item} index={index} type={"add"}/> )):
+        <Text>Invalid.</Text>
+      }
+        {/* <Button title="+ Add Destination" onPress={handleAddDestinationPress}/> */}
       {/* <Text>{JSON.stringify(itinerary)}</Text> */}
 
 

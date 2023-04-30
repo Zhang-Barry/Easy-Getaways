@@ -28,12 +28,13 @@ export const getMyPlacesFromServer = (jwt, uid) => {
     }
 }
 
-export const insertNewPlace = (jwt, uid, places_json) => {
+export const insertNewPlace = (jwt, uid, places_json, supressAlert=false) => {
     return async (dispatch) => {
+
         const body = {
             "jwt":jwt,
             "uid":uid,
-            "places_json": places_json,
+            "place_json": places_json,
         }
                 
         const fetchResult = await fetchData(`${REACT_APP_API_URL}/itineraries/insert_place/`, 'POST', body);    
@@ -45,9 +46,7 @@ export const insertNewPlace = (jwt, uid, places_json) => {
             return;
         }
 
-        alert("Itinerary saved successfully.");
-
-        getMyItinsFromServer(jwt, uid);
+        if (!supressAlert) alert("Place saved successfully.");
     }
 }
 
