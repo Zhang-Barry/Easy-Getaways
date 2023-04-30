@@ -78,17 +78,16 @@ export default function AutoGenerateItin({ navigation }) {
 
     const [spinnerLoading, setSpinnerLoading] = useState(false);
 
-    // console.log(mainData);
-
     const [itinerary, setItinerary] = useState([])
 
     useEffect(() => {
         setIsLoading(true);
+        setSpinnerLoading(true);
         getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, type).then((data) => {
-            console.log(data);
-            if (mainData.length != 0) { setItinerary(generateItinerary()) }
+            if (data) setMainData(data);
           setInterval(() => {
             setIsLoading(false);
+            setSpinnerLoading(false);
           }, 2000);
 
 
@@ -109,29 +108,44 @@ export default function AutoGenerateItin({ navigation }) {
 
       }, [bl_lat, bl_lng, tr_lat, tr_lng, type]);
 
-    
+      const wrapPlacesData = (placesObj) => {
+        return {
+          "extra_info": {},
+          "place_json": {
+            "name" : placesObj ? placesObj?.name : "",
+            "type" : placesObj ? placesObj?.category?.name : "",
+            "location" : placesObj ? placesObj?.address : "",
+            "url" : placesObj ? placesObj?.website : "",
+          }
+        }
+      }
+
+
+
       const generateItinerary = () => {
-        if (mainData.length == 0) alert("Error");
+        if (mainData.length == 0) {
+          alert("Could not find any nearby destinations.")
+          return;
+        };
         let randomlySelected = [];
-        randomlySelected.push(mainData[Math.floor(Math.random()*mainData.length)]);
-        randomlySelected.push(mainData[Math.floor(Math.random()*mainData.length)]);
-        randomlySelected.push(mainData[Math.floor(Math.random()*mainData.length)]);
-        randomlySelected.push(mainData[Math.floor(Math.random()*mainData.length)]);
+        console.log(mainData);
 
-        setItinerary(randomlySelected);
+        // randomlySelected.push(    wrapPlacesData(mainData[Math.floor((Math.random()*mainData.length))])  );
+        const mainDataCopy = [...mainData];
+        let count = 0;
+        while (count < 4 && mainDataCopy.length != 0) {
+          randomlySelected.push( wrapPlacesData( mainDataCopy.pop(Math.floor((Math.random()*mainData.length))) ) )
+          count += 1;
+        }
 
-        // return randomlySelected
+        return randomlySelected;
       }
 
       const handleSubmission = async () => {
-        if (!authInfo.isAuthenticated) return;
-        if (itinerary.length == 0) {
-            alert("No destinations found.");
-            return;
-        }
-        // const autoItin = generateItinerary();
+        if (!authInfo.isAuthenticated) alert("Please log in first.");
+        const autoItin = generateItinerary();
         setSpinnerLoading(true);
-        await insertNewItin(authInfo["access"], authInfo["user"]["pk"], "Auto-Generated Itinerary", null, null, null, "This is an auto-generated itinerary.", itinerary)(dispatch);
+        await insertNewItin(authInfo["access"], authInfo["user"]["pk"], "Auto-Generated Itinerary", null, null, null, "This is an auto-generated itinerary.", autoItin)(dispatch);
         await getMyItinsFromServer(authInfo["access"], authInfo["user"]["pk"])(dispatch);
         setSpinnerLoading(false);
       }

@@ -4,6 +4,12 @@ import {TRAVEL_ADVISOR_API_KEY} from '@env'
 
 export const getPlacesData = async (bl_lat, bl_lng, tr_lat, tr_lng, type) => {
   try {
+
+    let limit = "50";
+    if (type == "attractions") {
+      limit = "150";
+    }
+
     const {
       data: { data },
     } = await axios.get(
@@ -14,7 +20,7 @@ export const getPlacesData = async (bl_lat, bl_lng, tr_lat, tr_lng, type) => {
           tr_latitude: tr_lat ? tr_lat : "",
           bl_longitude: bl_lng ? bl_lng : "",
           tr_longitude: tr_lng ? tr_lng : "",
-          limit: "50",
+          limit: limit,
           currency: "USD",
           lunit: "km",
           lang: "en_US",
