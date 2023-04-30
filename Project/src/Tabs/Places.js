@@ -76,7 +76,7 @@ const PlacesTab = ( {navigation} ) => {
 
   return (
     <Stack.Navigator initialRouteName="SettingsRoot">
-      <Stack.Screen name="PlacesListScreen" component={PlacesListScreen} options={{title: "Places", headerShown: false}}/>
+      <Stack.Screen name="PlacesListScreen" component={PlacesListScreen} options={{title: "Saved Places", headerShown: false}}/>
       {/* <Stack.Screen name="ViewItinScreen" component={ViewItinScreen} options={{title: "View Itinerary", headerShown: false}}/> */}
       {/* <Stack.Screen name="CreateItinScreen" component={CreateItinScreen} options={{title: "Create Itinerary"}}/> */}
     </Stack.Navigator>
