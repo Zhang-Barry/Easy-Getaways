@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { Text, View, TextInput, Button, StyleSheet, ScrollView,  } from 'react-native';
+import { Text, View, TextInput, Button, StyleSheet, ScrollView, Alert, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import SelectDropdown from 'react-native-select-dropdown'
 import { Country, State, City }  from 'country-state-city';
-import { insertNewItin, getMyItinsFromServer } from './actions/itin';
-
-
+import { getMyItinsFromServer, insertNewItin } from './actions/itin';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const CreateItinScreen = ( {route, navigation} ) => {
 
@@ -23,12 +22,13 @@ const CreateItinScreen = ( {route, navigation} ) => {
   const uid = authState["user"]["pk"]
 
   // itinerary attributes
-  const [title, setTitle] = useState(itin.title);
-  const [description, setDescription] = useState(itin.description);
-  const [country, setCountry] = useState(itin.country);
-  const [state, setState] = useState(itin.state);
-  const [city, setCity] = useState(itin.city);
-  const [itinerary, setItinerary] = useState(itin.itinerary);
+  const tid = itin.tid;
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [country, setCountry] = useState(null);
+  const [state, setState] = useState(null);
+  const [city, setCity] = useState(null);
+  const [itinerary, setItinerary] = useState([]);
 
 
   let countryToISO = {}
@@ -89,34 +89,62 @@ const CreateItinScreen = ( {route, navigation} ) => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    
-    const testItin = [
-      {
-        "extra_info": {},   // leave blank for now
-        "place_json": {     // this is the JSON from the API response for this specific place.
-          "name": "Wendy's",
-          "type": "Restaurant",
-          "location": "New York, NY",
-          "url": "https://www.google.com/",
-        }
-      },
-      {
-        "extra_info": {},
-        "place_json": {
-          "name": "911",
-          "type": "Attraction",
-          "location": "New York, NY",
-          "url": "https://www.google.com/",
-        }
-      },
-    ]
-    await insertNewItin(jwt, uid, title, city, state, country, description, testItin)(dispatch);
-
-
-    // await insertNewItin(jwt, uid, title, city, state, country, description, itinerary)(dispatch);
-    await (getMyItinsFromServer)(jwt, uid)(dispatch);
+    // jwt, uid, title, city, state, country, description, itinerary
+    await insertNewItin(jwt, uid, title, city, state, country, description, itinerary)(dispatch);
+    await getMyItinsFromServer(jwt, uid)(dispatch);
     setLoading(false);
-    navigation.goBack()
+    navigation.goBack();
+  }
+
+  const deleteDestination = (index) => {
+    let newItin = [...itinerary];
+    newItin.splice(index, 1); // 2nd parameter means remove one item only
+
+    setItinerary(newItin);
+  }
+
+  const addDestination = (destinationObj) => {
+    destinationObj = {
+      "extra_info": {},
+      "place_json": {
+        "name": "Destination",
+        "location": "New York",
+        "type": "School",
+        "url": "https://google.com/"
+      }
+    }
+    let newItin = [...itinerary, destinationObj];
+    setItinerary(newItin)
+  }
+
+
+  const handleAddDestinationPress = () => {
+    addDestination()
+  }
+
+  const DestinationEditableComponent = ( {item, index} ) => {
+    return (
+      <TouchableOpacity style={styles.placeContainer} onPress={ () => handlePlacePress(index) }>
+        <Text style={{fontSize:25}}>{item.place_json.name}</Text>
+        <Text>{item.place_json.location}</Text>
+      </TouchableOpacity>
+    )
+  }
+  
+  const handlePlacePress = (index) => {
+  
+    Alert.alert('Delete Destination', 'Delete Destination from your itinerary?', [
+      {
+        text: 'Delete',
+        onPress: () => deleteDestination(index),
+        style: 'destructive',
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+  
   }
 
   return (
@@ -129,6 +157,13 @@ const CreateItinScreen = ( {route, navigation} ) => {
         />
 
       <ScrollView>
+        {/* <Text>{JSON.stringify(route.params.itin)}</Text> */}
+        
+        {/* <Spinner
+          visible={loading}
+          textContent={''}
+          textStyle={styles.spinnerTextStyle}
+        /> */}
         <Text style={styles.inputTitle}>Title</Text>
         <TextInput
             style={styles.input}
@@ -176,8 +211,14 @@ const CreateItinScreen = ( {route, navigation} ) => {
       />
 
 
-      <Text style={styles.titleTextSecondary}>Timeline</Text>
-      <Text>TODO</Text>
+      <Text style={styles.titleTextSecondary}>Destinations</Text>
+      {
+        (itinerary && itinerary.map) ?
+        (itinerary.map( (item, index) => <DestinationEditableComponent item={item} index={index}/> )):
+        <Text>Invalid.</Text>
+      }
+        <Button title="+ Add Destination" onPress={handleAddDestinationPress}/>
+      {/* <Text>{JSON.stringify(itinerary)}</Text> */}
 
 
         <TextInput>{"\n\n"}</TextInput>
@@ -188,6 +229,7 @@ const CreateItinScreen = ( {route, navigation} ) => {
       </ScrollView>
     </View>
   );
+
 };
 
 const styles = StyleSheet.create({
@@ -216,7 +258,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 700,
     marginTop: 30,
-  }
+  },  
+  placeContainer: {
+    display: "flex",
+    backgroundColor: "lightgray",
+    marginTop: 5,
+    padding: 10,
+    borderRadius: 10,
+  },
 });
 
 export default CreateItinScreen;

@@ -106,9 +106,9 @@ const EditItinScreen = ( {route, navigation} ) => {
     destinationObj = {
       "extra_info": {},
       "place_json": {
-        "name": destName,
-        "location": destLocation,
-        "type": destType,
+        "name": "Destination",
+        "location": "New York",
+        "type": "School",
         "url": "https://google.com/"
       }
     }
