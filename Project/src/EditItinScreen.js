@@ -98,7 +98,7 @@ const EditItinScreen = ( {route, navigation} ) => {
   const deleteDestination = (index) => {
     let newItin = [...itinerary];
     newItin.splice(index, 1); // 2nd parameter means remove one item only
-    
+
     setItinerary(newItin);
   }
 
@@ -106,15 +106,16 @@ const EditItinScreen = ( {route, navigation} ) => {
     destinationObj = {
       "extra_info": {},
       "place_json": {
-        "name": "NEW_DEST",
-        "location": "NEW YORK",
-        "type": "TEST DESTINATION",
+        "name": destName,
+        "location": destLocation,
+        "type": destType,
         "url": "https://google.com/"
       }
     }
     let newItin = [...itinerary, destinationObj];
     setItinerary(newItin)
   }
+
 
   const handleAddDestinationPress = () => {
     addDestination()

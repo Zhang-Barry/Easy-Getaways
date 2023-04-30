@@ -128,7 +128,7 @@ export default function AutoGenerateItin({ navigation }) {
           return;
         };
         let randomlySelected = [];
-        console.log(mainData);
+        // console.log(mainData);
 
         // randomlySelected.push(    wrapPlacesData(mainData[Math.floor((Math.random()*mainData.length))])  );
         let mainDataCopy = [...mainData];
@@ -138,6 +138,7 @@ export default function AutoGenerateItin({ navigation }) {
           count += 1;
           const index = Math.floor((Math.random()*mainData.length));
           if (!mainDataCopy[index]) continue;
+          if (!mainDataCopy[index].name) continue;
           randomlySelected.push(  wrapPlacesData( mainDataCopy[index]) )
           mainDataCopy.splice(index, 1); 
         }
