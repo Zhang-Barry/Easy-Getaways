@@ -66,12 +66,8 @@ export default function Home({ navigation }) {
                       language: 'en',
                   }}
               />
-              {/* <Text>Restaurants: {mainData?.map((data,i)=> 
-                  data?.name
-              )}</Text> */}
 
           </View>
-
 
           {isLoading ? (
             <View className="flex-1 items-center justify-center">
@@ -84,10 +80,6 @@ export default function Home({ navigation }) {
                   <View>
                     <View className="flex-row items-center justify-between px-4 mt-8">
                       <Text className="text-[28px] font-bold">Attractions</Text>
-                      {/* <TouchableOpacity className="flex-row items-center justify-center space-x-2">
-                        <Text className="text-[18px] text-gray-500 font-bold">Explore</Text>
-                        <FontAwesome name="long-arrow-right" size={20} color="gray"/>
-                        </TouchableOpacity> */}
                     </View>
     
                     <View className="px-2 mt-8 flex-row items-center justify-evenly flex-wrap">
@@ -95,7 +87,7 @@ export default function Home({ navigation }) {
                         <>
                           {mainData?.map((data, i) => (
                             <ItemCardContainer 
-                            key={i} 
+                            key={i+1} 
                             imageSrc= {
                               data?.photo?.images?.medium?.url ?
                               data?.photo?.images?.medium?.url :
