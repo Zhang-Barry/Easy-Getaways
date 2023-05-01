@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, ActivityIndicator, Image } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import {GOOGLE_PLACES_API_KEY} from '@env'
 import { getPlacesData } from "../handlers/travelAPI";
-import { FontAwesome } from '@expo/vector-icons';
 
 import ItemCardContainer from "../containers/ItemCardContainer"
 import { notfound } from '../../assets';
@@ -18,8 +17,7 @@ export default function Home({ navigation }) {
     // })
     // .catch(error => console.error(error));
     // const fetchResult = await fetchData(`${REACT_APP_API_URL}/dj-rest-auth/registration/`, 'POST', body);
-    const [type, setType] = useState("restaurants");
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [mainData, setMainData] = useState([]);
     const [mainDataRest, setMainDataRest] = useState([]); // for restaurants
 
@@ -31,30 +29,48 @@ export default function Home({ navigation }) {
 
     console.log(mainData);
 
+    // useEffect(() => {
+    //   console.log(bl_lat, bl_lng, tr_lat, tr_lng);
+
+    //     getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "attractions").then((data) => {
+    //       setMainData(data);
+    //       setInterval(() => {
+    //         setIsLoading(false);
+    //       }, 2000);
+    //     });
+
+
+    //     setIsLoading(true);
+    //     getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "restaurants").then((data) => {
+    //       setMainDataRest(data);
+    //       setInterval(() => {
+    //         setIsLoading(false);
+    //       }, 2000);
+
+
+    //     }
+    //   );
+
+    //   // }, [bl_lat, bl_lng]);
+    //   }, [bl_lat, bl_lng, tr_lat, tr_lng]);
+
+
+
     useEffect(() => {
-
-
+      if (bl_lat && bl_lng && tr_lat && tr_lng) {
         setIsLoading(true);
-
-
-        getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "attractions").then((data) => {
-          setMainData(data);
-          setInterval(() => {
-            setIsLoading(false);
-          }, 2000);
+        Promise.all([
+          getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "attractions"),
+          getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "restaurants"),
+        ]).then(([attractionsData, restaurantsData]) => {
+          setMainData(attractionsData);
+          setMainDataRest(restaurantsData);
+          setIsLoading(false);
         });
+      }
+    }, [bl_lat, bl_lng, tr_lat, tr_lng]);
 
 
-        getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "restaurants").then((data) => {
-          setMainDataRest(data);
-          setInterval(() => {
-            setIsLoading(false);
-          }, 2000);
-        });
-
-
-      }, [bl_lat]);
-      // }, [bl_lat, bl_lng, tr_lat, tr_lng, type]);
 
     return (
         // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
