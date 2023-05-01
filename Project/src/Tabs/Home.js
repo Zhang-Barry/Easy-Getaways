@@ -29,33 +29,6 @@ export default function Home({ navigation }) {
 
     console.log(mainData);
 
-    // useEffect(() => {
-    //   console.log(bl_lat, bl_lng, tr_lat, tr_lng);
-
-    //     getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "attractions").then((data) => {
-    //       setMainData(data);
-    //       setInterval(() => {
-    //         setIsLoading(false);
-    //       }, 2000);
-    //     });
-
-
-    //     setIsLoading(true);
-    //     getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, "restaurants").then((data) => {
-    //       setMainDataRest(data);
-    //       setInterval(() => {
-    //         setIsLoading(false);
-    //       }, 2000);
-
-
-    //     }
-    //   );
-
-    //   // }, [bl_lat, bl_lng]);
-    //   }, [bl_lat, bl_lng, tr_lat, tr_lng]);
-
-
-
     useEffect(() => {
       if (bl_lat && bl_lng && tr_lat && tr_lng) {
         setIsLoading(true);
@@ -66,7 +39,7 @@ export default function Home({ navigation }) {
           setMainData(attractionsData);
           setMainDataRest(restaurantsData);
           setIsLoading(false);
-        });
+        }, 2000);
       }
     }, [bl_lat, bl_lng, tr_lat, tr_lng]);
 
@@ -97,117 +70,104 @@ export default function Home({ navigation }) {
                   data?.name
               )}</Text> */}
 
-              
           </View>
-          {/* Code below is for components but not working
-          <View className="px-4 mt-8 flex-row items-center justify-evenly flex-wrap">
-                {mainData?.length > 0 ? (
-                  <>
-                    {mainData?.map((data, i) => (
-                      <ItemCarDontainer
-                        title={data?.name}
-                        location={data?.location_string}
-                      />
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    <View>
-                      <Text>
-                        Oops...No Data Found
-                      </Text>
-                    </View>
-                  </>
-                )}
-          </View> */}
+
+
           {isLoading ? (
             <View className="flex-1 items-center justify-center">
-              <ActivityIndicator size="large" color="pink"/>
-            </View> ) : ( 
-          
-            <ScrollView>
-              <View>
-                <View className="flex-row items-center justify-between px-4 mt-8">
-                  <Text className="text-[28px] font-bold">Attractions</Text>
-                  {/* <TouchableOpacity className="flex-row items-center justify-center space-x-2">
-                    <Text className="text-[18px] text-gray-500 font-bold">Explore</Text>
-                    <FontAwesome name="long-arrow-right" size={20} color="gray"/>
-                    </TouchableOpacity> */}
-                </View>
-
-                <View className="px-2 mt-8 flex-row items-center justify-evenly flex-wrap">
-                  {mainData?.length > 0 ? (
-                    <>
-                      {mainData?.map((data, i) => (
-                        <ItemCardContainer 
-                        key={i} 
-                        imageSrc= {
-                          data?.photo?.images?.medium?.url ?
-                          data?.photo?.images?.medium?.url :
-                          "https://pixabay.com/photos/architecture-building-skyscraper-7947727/"
-                        } 
-                        title={data?.name}
-                        location={data?.location_string} 
-                        json={data}
-                        />
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      <View className="w-full h-[400px] items-center sapce-y-8 justify-center">
-                        <Image source={notfound} className="w-32 h-32 object-cover"/>
-                        <Text className="text-[16px] my-5 font-semibold"> Oops! No Data Found...</Text>
-                      </View>
-                    </>
-                  )}
-                </View>
-              </View>
-
-
-
-
-              <View>
-                <View className="flex-row items-center justify-between px-4 mt-8">
-                  <Text className="text-[28px] font-bold">Restaurants</Text>
-                  {/* <TouchableOpacity className="flex-row items-center justify-center space-x-2">
-                    <Text className="text-[18px] text-gray-500 font-bold">Explore</Text>
-                    <FontAwesome name="long-arrow-right" size={20} color="gray"/>
-                    </TouchableOpacity> */}
-                </View>
-
-                <View className="px-2 mt-8 flex-row items-center justify-evenly flex-wrap">
-                  {mainDataRest?.length > 0 ? (
-                    <>
-                      {mainDataRest?.map((data, i) => (
-                        <ItemCardContainer 
-                        key={i} 
-                        imageSrc= {
-                          data?.photo?.images?.medium?.url ?
-                          data?.photo?.images?.medium?.url :
-                          "https://pixabay.com/photos/architecture-building-skyscraper-7947727/"
-                        } 
-                        title={data?.name}
-                        location={data?.location_string}
-                        json={data}
-                        />
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      <View className="w-full h-[400px] items-center sapce-y-8 justify-center">
-                        <Image source={notfound} className="w-32 h-32 object-cover"/>
-                        <Text className="text-[16px] my-5 font-semibold"> Oops! No Data Found...</Text>
-                      </View>
-                    </>
-                  )}
-                </View>
-              </View>
-
-
-
-
-            </ScrollView>)
-          }
+              <ActivityIndicator size="large" color="gray"/>
+            </View> 
+            ) : ( 
+            <>
+              {(mainData?.length > 0 && mainDataRest?.length > 0) ? (
+                <ScrollView>
+                  <View>
+                    <View className="flex-row items-center justify-between px-4 mt-8">
+                      <Text className="text-[28px] font-bold">Attractions</Text>
+                      {/* <TouchableOpacity className="flex-row items-center justify-center space-x-2">
+                        <Text className="text-[18px] text-gray-500 font-bold">Explore</Text>
+                        <FontAwesome name="long-arrow-right" size={20} color="gray"/>
+                        </TouchableOpacity> */}
+                    </View>
+    
+                    <View className="px-2 mt-8 flex-row items-center justify-evenly flex-wrap">
+                      {mainData?.length > 0 ? (
+                        <>
+                          {mainData?.map((data, i) => (
+                            <ItemCardContainer 
+                            key={i} 
+                            imageSrc= {
+                              data?.photo?.images?.medium?.url ?
+                              data?.photo?.images?.medium?.url :
+                              "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
+                            } 
+                            title={data?.name}
+                            location={data?.location_string} 
+                            json={data}
+                            />
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          <View className="w-full h-[400px] items-center sapce-y-8 justify-center">
+                            <Image source={notfound} className="w-32 h-32 object-cover"/>
+                            <Text className="text-[16px] my-5 font-semibold"> Oops! No Data Found...</Text>
+                          </View>
+                        </>
+                      )}
+                    </View>
+                  </View>
+    
+    
+    
+    
+                  <View>
+                    <View className="flex-row items-center justify-between px-4 mt-8">
+                      <Text className="text-[28px] font-bold">Restaurants</Text>
+                      {/* <TouchableOpacity className="flex-row items-center justify-center space-x-2">
+                        <Text className="text-[18px] text-gray-500 font-bold">Explore</Text>
+                        <FontAwesome name="long-arrow-right" size={20} color="gray"/>
+                        </TouchableOpacity> */}
+                    </View>
+    
+                    <View className="px-2 mt-8 flex-row items-center justify-evenly flex-wrap">
+                      {mainDataRest?.length > 0 ? (
+                        <>
+                          {mainDataRest?.map((data, i) => (
+                            <ItemCardContainer 
+                            key={i} 
+                            imageSrc= {
+                              data?.photo?.images?.medium?.url ?
+                              data?.photo?.images?.medium?.url :
+                              "https://pixabay.com/photos/architecture-building-skyscraper-7947727/"
+                            } 
+                            title={data?.name}
+                            location={data?.location_string}
+                            json={data}
+                            />
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          <View className="w-full h-[400px] items-center sapce-y-8 justify-center">
+                            <Image source={notfound} className="w-32 h-32 object-cover"/>
+                            <Text className="text-[16px] my-5 font-semibold"> Oops! No Data Found...</Text>
+                          </View>
+                        </>
+                      )}
+                    </View>
+                  </View>
+    
+                </ScrollView>
+              ) : (
+                <>
+                  <View className="w-full h-[400px] items-center sapce-y-8 justify-center">
+                    <Image source={notfound} className="w-32 h-32 object-cover"/>
+                    <Text className="text-[16px] my-5 font-semibold"> Oops! No Data Found...</Text>
+                  </View>
+                </>)}
+            </>
+          )}
         </SafeAreaView>
     );
 }
